@@ -1,0 +1,17 @@
+.item-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.person-card {
+  display: flex;
+  flex-direction: row;
+  width: 400px;
+}
+
+.person-image {
+  width: auto;
+  height: 190px;
+  border-radius: 5px;
+}
