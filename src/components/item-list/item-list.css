@@ -1,0 +1,15 @@
+.item-list {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.section-left {
+  flex-grow: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.list-message {
+  flex-grow: 1;
+}
