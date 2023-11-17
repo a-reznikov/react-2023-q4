@@ -189,7 +189,6 @@ export const context: AppContext = {
   term: '',
   data: data.docs,
   itemData: [characterTransform],
-  id: '',
   limit: '',
   page: '',
   lastPage: '',
@@ -199,7 +198,6 @@ export const context: AppContext = {
   setTerm: (): void => {},
   setLimit: (): void => {},
   setPage: (): void => {},
-  setId: (): void => {},
   searchData: (): void => {},
 };
 

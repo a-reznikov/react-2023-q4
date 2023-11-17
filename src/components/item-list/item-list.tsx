@@ -6,15 +6,18 @@ import Loader from '../loader';
 import ItemDetails from '../item-details';
 import { Context } from '../contexts';
 import ItemCard from '../item-card';
+import { setDetailsId } from '../../store/reducers/detailsSlice';
+import { useAppDispatch } from '../../store/hooks';
 
 const ItemList: React.FC<EmptyProps> = (): JSX.Element => {
   const context: AppContext = useContext<AppContext>(Context);
-  const { data, loading, setId } = context;
+  const dispatch = useAppDispatch();
+  const { data, loading } = context;
   const leftList: React.MutableRefObject<null> = useRef(null);
 
   const onCloseDetails = (event: MouseEvent<HTMLDivElement>): void => {
     event.stopPropagation();
-    if (leftList.current === event.target) setId('');
+    if (leftList.current === event.target) dispatch(setDetailsId(''));
   };
 
   function renderItems(): JSX.Element[] {

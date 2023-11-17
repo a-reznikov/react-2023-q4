@@ -39,7 +39,6 @@ export interface AppContext {
   term: string;
   data: Character[];
   itemData: Character[];
-  id: string;
   limit: string;
   page: string;
   lastPage: string;
@@ -49,7 +48,6 @@ export interface AppContext {
   setTerm: ReactSet;
   setLimit: ReactSet;
   setPage: ReactSet;
-  setId: ReactSet;
   searchData: () => void;
 }
 

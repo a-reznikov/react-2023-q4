@@ -4,10 +4,14 @@ import Loader from '../loader';
 import { AppContext, EmptyProps } from '../types';
 
 import './item-details.css';
+import { useAppDispatch } from '../../store/hooks';
+import { SetDetailsID, setDetailsId } from '../../store/reducers/detailsSlice';
 
 const ItemDetails: React.FC<EmptyProps> = (): JSX.Element | null => {
   const context: AppContext = useContext<AppContext>(Context);
-  const { loadingItem, itemData, setId } = context;
+  const dispatch = useAppDispatch();
+
+  const { loadingItem, itemData } = context;
 
   function renderItem(): JSX.Element {
     const {
@@ -34,7 +38,7 @@ const ItemDetails: React.FC<EmptyProps> = (): JSX.Element | null => {
             type="button"
             data-testid="btn-close"
             className="btn-close"
-            onClick={(): void => setId('')}
+            onClick={(): SetDetailsID => dispatch(setDetailsId(''))}
           ></button>
           <div className="card-body">
             <h4>{name}</h4>

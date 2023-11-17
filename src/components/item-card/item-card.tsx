@@ -1,19 +1,23 @@
-import { useContext } from 'react';
-import { AppContext, ItemCardProps } from '../types';
+import { ItemCardProps } from '../types';
 
 import './item-card.css';
-import { Context } from '../contexts';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { setDetailsId } from '../../store/reducers/detailsSlice';
 
 const ItemCard: React.FC<ItemCardProps> = (
   props: ItemCardProps
 ): JSX.Element => {
-  const context: AppContext = useContext<AppContext>(Context);
-  const { setId, id } = context;
+  const id: string = useAppSelector((state) => state.details.value);
+  const dispatch = useAppDispatch();
+
   const { name, gender, race, birth, _id } = props.character;
 
   function onChangeId(_id: string): void {
-    if (_id === id) setId('');
-    else setId(_id);
+    if (_id === id) {
+      dispatch(setDetailsId(''));
+    } else {
+      dispatch(setDetailsId(_id));
+    }
   }
 
   return (

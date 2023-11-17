@@ -3,10 +3,14 @@ import { Character, ResponseApi, Query, AppContext } from '../types';
 import { useSearchParams } from 'react-router-dom';
 
 import Api from '../../services/api';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { setDetailsId } from '../../store/reducers/detailsSlice';
 const api: Api = new Api();
 
 const useCreateContext = (): AppContext => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const dispatch = useAppDispatch();
+
   const [term, setTerm] = useState<string>(
     searchParams.get('name') || localStorage.getItem('termForSearching') || ''
   );
@@ -18,8 +22,18 @@ const useCreateContext = (): AppContext => {
   const [limit, setLimit] = useState<string>(searchParams.get('limit') || '10');
   const [page, setPage] = useState<string>(searchParams.get('page') || '1');
   const [lastPage, setLastPage] = useState<string>('');
-  const [id, setId] = useState<string>(searchParams.get('id') || '');
-  const query: Query = { name: term, page: page, limit: limit, id: id };
+  const [startId] = useState<string>(searchParams.get('id') || '');
+  const idCard: string = useAppSelector((state) => state.details.value);
+  const query: Query = {
+    name: term,
+    page: page,
+    limit: limit,
+    id: idCard,
+  };
+
+  useEffect((): void => {
+    dispatch(setDetailsId(startId));
+  }, [dispatch, startId]);
 
   useEffect((): void => {
     searchData();
@@ -29,11 +43,10 @@ const useCreateContext = (): AppContext => {
   useEffect((): void => {
     getItemData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+  }, [idCard]);
 
   async function searchData(): Promise<void> {
     if (loading) return;
-    setId('');
     setSearchParams(query);
     setLoading(true);
     localStorage.setItem('termForSearching', term);
@@ -51,12 +64,12 @@ const useCreateContext = (): AppContext => {
     if (loadingItem) return;
     setSearchParams(query);
     setLoadingItem(true);
-    if (!id) {
+    if (!idCard) {
       setItemData([]);
       setLoadingItem(false);
     } else {
       try {
-        const response: ResponseApi = await api.getItemByID(id);
+        const response: ResponseApi = await api.getItemByID(idCard);
         setItemData(response.docs);
         setLoadingItem(false);
       } catch (error) {
@@ -69,7 +82,6 @@ const useCreateContext = (): AppContext => {
     term: term,
     data: data,
     itemData: itemData,
-    id: id,
     limit: limit,
     page: `${page}`,
     lastPage: `${lastPage}`,
@@ -79,7 +91,6 @@ const useCreateContext = (): AppContext => {
     setTerm: setTerm,
     setLimit: setLimit,
     setPage: setPage,
-    setId: setId,
     searchData: searchData,
   };
 };

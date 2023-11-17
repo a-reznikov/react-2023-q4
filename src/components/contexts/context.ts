@@ -6,7 +6,6 @@ export const Context: React.Context<AppContext> =
     term: '',
     data: [],
     itemData: [],
-    id: '',
     limit: '',
     page: '',
     lastPage: '',
@@ -16,6 +15,5 @@ export const Context: React.Context<AppContext> =
     setTerm: (): void => {},
     setLimit: (): void => {},
     setPage: (): void => {},
-    setId: (): void => {},
     searchData: (): void => {},
   });
