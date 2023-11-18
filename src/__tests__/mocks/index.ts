@@ -186,17 +186,13 @@ export const dataTransform: ResponseApi = {
 };
 
 export const context: AppContext = {
-  term: '',
   data: data.docs,
   itemData: [characterTransform],
-  limit: '',
   page: '',
   lastPage: '',
   loading: false,
   loadingItem: false,
   messageError: '',
-  setTerm: (): void => {},
-  setLimit: (): void => {},
   setPage: (): void => {},
   searchData: (): void => {},
 };

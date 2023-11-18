@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useContext, useState } from 'react';
+import { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react';
 
 import './pagination.css';
 import {
@@ -9,19 +9,28 @@ import {
   FunctionVoid,
 } from '../types';
 import { Context } from '../contexts';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { Limit } from '../../store/reducers/limit-slice';
 
 const Pagination: React.FC<EmptyProps> = (): JSX.Element => {
+  const dispatch = useAppDispatch();
+
   const context: AppContext = useContext<AppContext>(Context);
-  const { setLimit, page, setPage, lastPage, limit } = context;
-  const [currentLimit, setCurrentLimit] = useState<string>(limit);
+  const limit: string = useAppSelector(Limit.select);
+  const { page, setPage, lastPage } = context;
+  const [currentLimit, setCurrentLimit] = useState<string>('');
   const firstPage: string = `1`;
+
+  useEffect((): void => {
+    setCurrentLimit(limit);
+  }, [limit]);
 
   const onGetDataWithLimit: EventForm = (
     event: FormEvent<HTMLFormElement>
   ): void => {
     event.preventDefault();
     setPage(firstPage);
-    setLimit(currentLimit);
+    dispatch(Limit.set(currentLimit));
   };
 
   const onSetLimit: EventChange = (

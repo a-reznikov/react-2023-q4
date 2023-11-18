@@ -38,13 +38,11 @@ export type FunctionVoid = () => void;
 export interface AppContext {
   data: Character[];
   itemData: Character[];
-  limit: string;
   page: string;
   lastPage: string;
   loading: boolean;
   loadingItem: boolean;
   messageError: string;
-  setLimit: ReactSet;
   setPage: ReactSet;
   searchData: () => void;
 }

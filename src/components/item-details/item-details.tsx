@@ -5,7 +5,7 @@ import { AppContext, EmptyProps } from '../types';
 
 import './item-details.css';
 import { useAppDispatch } from '../../store/hooks';
-import { SetDetailsID, setDetailsId } from '../../store/reducers/details-slice';
+import { SetDetailsID, DetailsId } from '../../store/reducers/details-slice';
 
 const ItemDetails: React.FC<EmptyProps> = (): JSX.Element | null => {
   const context: AppContext = useContext<AppContext>(Context);
@@ -38,7 +38,7 @@ const ItemDetails: React.FC<EmptyProps> = (): JSX.Element | null => {
             type="button"
             data-testid="btn-close"
             className="btn-close"
-            onClick={(): SetDetailsID => dispatch(setDetailsId(''))}
+            onClick={(): SetDetailsID => dispatch(DetailsId.set(''))}
           ></button>
           <div className="card-body">
             <h4>{name}</h4>
