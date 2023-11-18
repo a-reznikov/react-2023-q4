@@ -4,16 +4,24 @@ import { useSearchParams } from 'react-router-dom';
 
 import Api from '../../services/api';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { setDetailsId } from '../../store/reducers/detailsSlice';
+import {
+  selectDetails,
+  setDetailsId,
+} from '../../store/reducers/details-slice';
+import {
+  selectSearch,
+  setSearch,
+  initSearchStateValue,
+} from '../../store/reducers/search-slice';
 const api: Api = new Api();
 
 const useCreateContext = (): AppContext => {
   const [searchParams, setSearchParams] = useSearchParams();
   const dispatch = useAppDispatch();
 
-  const [term, setTerm] = useState<string>(
-    searchParams.get('name') || localStorage.getItem('termForSearching') || ''
-  );
+  const initId: string = searchParams.get('id') || '';
+  const initTerm: string =
+    searchParams.get('name') || localStorage.getItem('termForSearching') || '';
   const [data, setData] = useState<Character[]>([]);
   const [itemData, setItemData] = useState<Character[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -22,36 +30,37 @@ const useCreateContext = (): AppContext => {
   const [limit, setLimit] = useState<string>(searchParams.get('limit') || '10');
   const [page, setPage] = useState<string>(searchParams.get('page') || '1');
   const [lastPage, setLastPage] = useState<string>('');
-  const [startId] = useState<string>(searchParams.get('id') || '');
-  const idCard: string = useAppSelector((state) => state.details.value);
+
+  const idCard: string = useAppSelector(selectDetails);
+  const searchTerm: string = useAppSelector(selectSearch);
   const query: Query = {
-    name: term,
+    name: searchTerm,
     page: page,
     limit: limit,
     id: idCard,
   };
 
   useEffect((): void => {
-    dispatch(setDetailsId(startId));
-  }, [dispatch, startId]);
-
-  useEffect((): void => {
-    searchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, limit]);
+    dispatch(setSearch(initTerm));
+    dispatch(setDetailsId(initId));
+  }, [dispatch, initId, initTerm]);
 
   useEffect((): void => {
     getItemData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idCard]);
 
+  useEffect((): void => {
+    if (initSearchStateValue !== searchTerm) searchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, limit, searchTerm]);
+
   async function searchData(): Promise<void> {
     if (loading) return;
     setSearchParams(query);
     setLoading(true);
-    localStorage.setItem('termForSearching', term);
     try {
-      const response: ResponseApi = await api.search(term, limit, page);
+      const response: ResponseApi = await api.search(searchTerm, limit, page);
       setData(response.docs);
       setLastPage(`${response.pages}`);
       setLoading(false);
@@ -79,7 +88,6 @@ const useCreateContext = (): AppContext => {
   }
 
   return {
-    term: term,
     data: data,
     itemData: itemData,
     limit: limit,
@@ -88,7 +96,6 @@ const useCreateContext = (): AppContext => {
     loading: loading,
     loadingItem: loadingItem,
     messageError: messageError,
-    setTerm: setTerm,
     setLimit: setLimit,
     setPage: setPage,
     searchData: searchData,

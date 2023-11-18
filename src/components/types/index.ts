@@ -36,7 +36,6 @@ export type EventChange = (event: ChangeEvent<HTMLInputElement>) => void;
 export type FunctionVoid = () => void;
 
 export interface AppContext {
-  term: string;
   data: Character[];
   itemData: Character[];
   limit: string;
@@ -45,7 +44,6 @@ export interface AppContext {
   loading: boolean;
   loadingItem: boolean;
   messageError: string;
-  setTerm: ReactSet;
   setLimit: ReactSet;
   setPage: ReactSet;
   searchData: () => void;

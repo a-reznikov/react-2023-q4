@@ -6,7 +6,7 @@ import Loader from '../loader';
 import ItemDetails from '../item-details';
 import { Context } from '../contexts';
 import ItemCard from '../item-card';
-import { setDetailsId } from '../../store/reducers/detailsSlice';
+import { setDetailsId } from '../../store/reducers/details-slice';
 import { useAppDispatch } from '../../store/hooks';
 
 const ItemList: React.FC<EmptyProps> = (): JSX.Element => {

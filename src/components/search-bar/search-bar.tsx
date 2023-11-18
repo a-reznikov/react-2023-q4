@@ -1,28 +1,38 @@
-import { ChangeEvent, FormEvent, useContext } from 'react';
+import { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react';
 import { AppContext, EmptyProps, EventChange, EventForm } from '../types';
 import { Context } from '../contexts';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { selectSearch, setSearch } from '../../store/reducers/search-slice';
 
 const SearchBar: React.FC<EmptyProps> = (): JSX.Element => {
+  const searchTerm: string = useAppSelector(selectSearch);
+  const [currentSearchTerm, setCurrentSearchTerm] = useState<string>('');
+  const dispatch = useAppDispatch();
   const context: AppContext = useContext<AppContext>(Context);
-  const { term, page, setTerm, searchData, setPage } = context;
+  const { page, setPage } = context;
   const firstPage: string = `1`;
+
+  useEffect(() => {
+    setCurrentSearchTerm(searchTerm);
+  }, [searchTerm]);
 
   const changeSearchTerm: EventChange = (
     event: ChangeEvent<HTMLInputElement>
   ): void => {
-    setTerm(event.target.value.trim());
+    setCurrentSearchTerm(event.target.value.trim());
   };
 
-  const searchTerm: EventForm = (event: FormEvent<HTMLFormElement>): void => {
+  const onSearchTerm: EventForm = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
     if (page !== firstPage) setPage(firstPage);
-    else searchData();
+    dispatch(setSearch(currentSearchTerm));
+    localStorage.setItem('termForSearching', currentSearchTerm);
   };
 
   return (
     <form
       className="search-bar d-flex align-items-center"
-      onSubmit={searchTerm}
+      onSubmit={onSearchTerm}
     >
       <input
         className="form-control me-sm-2"
@@ -30,7 +40,7 @@ const SearchBar: React.FC<EmptyProps> = (): JSX.Element => {
         type="search"
         placeholder="search character by name"
         onChange={changeSearchTerm}
-        value={term}
+        value={currentSearchTerm}
         data-testid="search-input"
       ></input>
       <button

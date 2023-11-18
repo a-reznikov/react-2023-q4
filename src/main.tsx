@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react'; //TODO add strict mode
 import ReactDOM from 'react-dom/client';
 import App from './components/app';
 
@@ -9,13 +9,11 @@ import { Provider } from 'react-redux';
 import { store } from './store/store';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <ErrorBoundry>
-      <BrowserRouter>
-        <Provider store={store}>
-          <App />
-        </Provider>
-      </BrowserRouter>
-    </ErrorBoundry>
-  </React.StrictMode>
+  <ErrorBoundry>
+    <BrowserRouter>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </BrowserRouter>
+  </ErrorBoundry>
 );

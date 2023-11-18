@@ -2,7 +2,7 @@ import { ItemCardProps } from '../types';
 
 import './item-card.css';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { setDetailsId } from '../../store/reducers/detailsSlice';
+import { setDetailsId } from '../../store/reducers/details-slice';
 
 const ItemCard: React.FC<ItemCardProps> = (
   props: ItemCardProps

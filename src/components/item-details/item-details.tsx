@@ -5,7 +5,7 @@ import { AppContext, EmptyProps } from '../types';
 
 import './item-details.css';
 import { useAppDispatch } from '../../store/hooks';
-import { SetDetailsID, setDetailsId } from '../../store/reducers/detailsSlice';
+import { SetDetailsID, setDetailsId } from '../../store/reducers/details-slice';
 
 const ItemDetails: React.FC<EmptyProps> = (): JSX.Element | null => {
   const context: AppContext = useContext<AppContext>(Context);
