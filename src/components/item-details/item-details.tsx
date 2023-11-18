@@ -1,17 +1,14 @@
-import { useContext } from 'react';
-import { Context } from '../contexts';
 import Loader from '../loader';
-import { AppContext, EmptyProps } from '../types';
+import { Character, EmptyProps } from '../types';
 
 import './item-details.css';
-import { useAppDispatch } from '../../store/hooks';
-import { SetDetailsID, DetailsId } from '../../store/reducers/details-slice';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { SetDetailsId, Details } from '../../store/reducers/details-slice';
 
 const ItemDetails: React.FC<EmptyProps> = (): JSX.Element | null => {
-  const context: AppContext = useContext<AppContext>(Context);
   const dispatch = useAppDispatch();
-
-  const { loadingItem, itemData } = context;
+  const loadingDetails: boolean = useAppSelector(Details.loader.select);
+  const dataDetails: Character[] = useAppSelector(Details.data.select);
 
   function renderItem(): JSX.Element {
     const {
@@ -26,7 +23,7 @@ const ItemDetails: React.FC<EmptyProps> = (): JSX.Element | null => {
       realm,
       spouse,
       wikiUrl,
-    } = itemData[0];
+    } = dataDetails[0];
     return (
       <section className="section-right" data-testid="section-right">
         <div
@@ -38,7 +35,7 @@ const ItemDetails: React.FC<EmptyProps> = (): JSX.Element | null => {
             type="button"
             data-testid="btn-close"
             className="btn-close"
-            onClick={(): SetDetailsID => dispatch(DetailsId.set(''))}
+            onClick={(): SetDetailsId => dispatch(Details.id.set(''))}
           ></button>
           <div className="card-body">
             <h4>{name}</h4>
@@ -82,8 +79,8 @@ const ItemDetails: React.FC<EmptyProps> = (): JSX.Element | null => {
     );
   }
 
-  const item: JSX.Element | null = itemData.length ? renderItem() : null;
-  const content: JSX.Element | null = loadingItem ? (
+  const item: JSX.Element | null = dataDetails.length ? renderItem() : null;
+  const content: JSX.Element | null = loadingDetails ? (
     <section className="section-right" data-testid="section-right">
       <Loader />
     </section>

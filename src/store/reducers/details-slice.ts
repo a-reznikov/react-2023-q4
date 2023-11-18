@@ -1,41 +1,82 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { ActionCreatorWithPayload, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../store';
+import { Character } from '../../components/types';
 
 interface DetailsState {
-  value: string;
+  id: string;
+  data: Character[];
+  loader: boolean;
 }
 
-export type SetDetailsID = { payload: string; type: 'details/setDetailsId' };
+export type SetDetailsId = { payload: string; type: 'details/setId' };
+export type SetData = { payload: Character[]; type: 'details/setData' };
+export type SetLoader = { payload: boolean; type: 'details/setLoader' };
 
 type Select = (state: RootState) => string;
+type SelectCharacter = (state: RootState) => Character[];
+type SelectLoader = (state: RootState) => boolean;
 
-export interface DetailsIdSlice {
-  set: ActionCreatorWithPayload<string, 'details/setDetailsId'>;
-  select: Select;
+export interface DetailsSlice {
+  id: {
+    set: ActionCreatorWithPayload<string, 'details/setId'>;
+    select: Select;
+  };
+  data: {
+    set: ActionCreatorWithPayload<Character[], 'details/setData'>;
+    select: SelectCharacter;
+  };
+  loader: {
+    set: ActionCreatorWithPayload<boolean, 'details/setLoader'>;
+    select: SelectLoader;
+  };
 }
 
 const initialState: DetailsState = {
-  value: '',
+  id: '',
+  data: [],
+  loader: false,
 };
 
 export const detailsSlice = createSlice({
   name: 'details',
   initialState,
   reducers: {
-    setDetailsId: (state, action: PayloadAction<string>) => {
-      state.value = action.payload;
+    setId: (state, action: PayloadAction<string>) => {
+      state.id = action.payload;
+    },
+    setData: (state, action: PayloadAction<Character[]>) => {
+      state.data = action.payload;
+    },
+    setLoader: (state, action: PayloadAction<boolean>) => {
+      state.loader = action.payload;
     },
   },
 });
 
-export const { setDetailsId } = detailsSlice.actions;
+export const { setId } = detailsSlice.actions;
+export const { setData } = detailsSlice.actions;
+export const { setLoader } = detailsSlice.actions;
 
-export const selectDetails: Select = (state: RootState) => state.details.value;
+export const selectDetailsId: Select = (state: RootState) => state.details.id;
+export const selectData: SelectCharacter = (state: RootState) =>
+  state.details.data;
+export const selectLoader: SelectLoader = (state: RootState) =>
+  state.details.loader;
+
+export const Details: DetailsSlice = {
+  id: {
+    set: setId,
+    select: selectDetailsId,
+  },
+  data: {
+    set: setData,
+    select: selectData,
+  },
+  loader: {
+    set: setLoader,
+    select: selectLoader,
+  },
+};
 
 export default detailsSlice.reducer;
-
-export const DetailsId: DetailsIdSlice = {
-  set: setDetailsId,
-  select: selectDetails,
-};

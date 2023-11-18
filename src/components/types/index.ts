@@ -36,10 +36,8 @@ export type EventChange = (event: ChangeEvent<HTMLInputElement>) => void;
 export type FunctionVoid = () => void;
 
 export interface AppContext {
-  itemData: Character[];
   page: string;
   lastPage: string;
-  loadingItem: boolean;
   messageError: string;
   setPage: ReactSet;
 }

@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Character, ResponseApi, Query, AppContext } from '../types';
+import { ResponseApi, Query, AppContext } from '../types';
 import { useSearchParams } from 'react-router-dom';
 
 import Api from '../../services/api';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { DetailsId } from '../../store/reducers/details-slice';
+import { Details } from '../../store/reducers/details-slice';
 import { Search } from '../../store/reducers/search-slice';
 import { Limit } from '../../store/reducers/limit-slice';
 import { Data } from '../../store/reducers/data-slice';
@@ -19,16 +19,15 @@ const useCreateContext = (): AppContext => {
     searchParams.get('name') || localStorage.getItem('termForSearching') || '';
   const initLimit: string = searchParams.get('limit') || '10';
 
-  const [itemData, setItemData] = useState<Character[]>([]);
-  const [loadingItem, setLoadingItem] = useState<boolean>(false);
   const [messageError, setMessageError] = useState<string>('');
   const [page, setPage] = useState<string>(searchParams.get('page') || '1');
   const [lastPage, setLastPage] = useState<string>('');
 
-  const idCard: string = useAppSelector(DetailsId.select);
+  const idCard: string = useAppSelector(Details.id.select);
   const searchTerm: string = useAppSelector(Search.select);
   const limit: string = useAppSelector(Limit.select);
   const loading: boolean = useAppSelector(Data.loader.select);
+  const loadingDetails: boolean = useAppSelector(Details.loader.select);
 
   const query: Query = {
     name: searchTerm,
@@ -38,7 +37,7 @@ const useCreateContext = (): AppContext => {
   };
 
   useEffect((): void => {
-    dispatch(DetailsId.set(initId));
+    dispatch(Details.id.set(initId));
   }, [dispatch, initId]);
 
   useEffect((): void => {
@@ -74,17 +73,17 @@ const useCreateContext = (): AppContext => {
   }
 
   async function getItemData(): Promise<void> {
-    if (loadingItem) return;
+    if (loadingDetails) return;
     setSearchParams(query);
-    setLoadingItem(true);
+    dispatch(Details.loader.set(true));
     if (!idCard) {
-      setItemData([]);
-      setLoadingItem(false);
+      dispatch(Details.data.set([]));
+      dispatch(Details.loader.set(false));
     } else {
       try {
         const response: ResponseApi = await api.getItemByID(idCard);
-        setItemData(response.docs);
-        setLoadingItem(false);
+        dispatch(Details.data.set(response.docs));
+        dispatch(Details.loader.set(false));
       } catch (error) {
         if (error instanceof Error) setMessageError(error.message);
       }
@@ -92,10 +91,8 @@ const useCreateContext = (): AppContext => {
   }
 
   return {
-    itemData: itemData,
     page: `${page}`,
     lastPage: `${lastPage}`,
-    loadingItem: loadingItem,
     messageError: messageError,
     setPage: setPage,
   };

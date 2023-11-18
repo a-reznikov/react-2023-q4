@@ -2,21 +2,21 @@ import { ItemCardProps } from '../types';
 
 import './item-card.css';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { setDetailsId } from '../../store/reducers/details-slice';
+import { Details } from '../../store/reducers/details-slice';
 
 const ItemCard: React.FC<ItemCardProps> = (
   props: ItemCardProps
 ): JSX.Element => {
-  const id: string = useAppSelector((state) => state.details.value);
+  const id: string = useAppSelector(Details.id.select);
   const dispatch = useAppDispatch();
 
   const { name, gender, race, birth, _id } = props.character;
 
   function onChangeId(_id: string): void {
     if (_id === id) {
-      dispatch(setDetailsId(''));
+      dispatch(Details.id.set(''));
     } else {
-      dispatch(setDetailsId(_id));
+      dispatch(Details.id.set(_id));
     }
   }
 

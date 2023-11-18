@@ -5,7 +5,7 @@ import Logo from '../../assets/icons/logo.png';
 import './header.css';
 import Pagination from '../pagination';
 import { useAppDispatch } from '../../store/hooks';
-import { SetDetailsID, setDetailsId } from '../../store/reducers/details-slice';
+import { SetDetailsId, Details } from '../../store/reducers/details-slice';
 
 const Header: React.FC<EmptyProps> = (): JSX.Element => {
   const dispatch = useAppDispatch();
@@ -13,7 +13,7 @@ const Header: React.FC<EmptyProps> = (): JSX.Element => {
   return (
     <header
       className="header"
-      onClick={(): SetDetailsID => dispatch(setDetailsId(''))}
+      onClick={(): SetDetailsId => dispatch(Details.id.set(''))}
     >
       <div className="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
         <div className="container-fluid">

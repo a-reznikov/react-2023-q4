@@ -5,7 +5,7 @@ import './item-list.css';
 import Loader from '../loader';
 import ItemDetails from '../item-details';
 import ItemCard from '../item-card';
-import { setDetailsId } from '../../store/reducers/details-slice';
+import { Details } from '../../store/reducers/details-slice';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { Data } from '../../store/reducers/data-slice';
 
@@ -17,7 +17,7 @@ const ItemList: React.FC<EmptyProps> = (): JSX.Element => {
 
   const onCloseDetails = (event: MouseEvent<HTMLDivElement>): void => {
     event.stopPropagation();
-    if (leftList.current === event.target) dispatch(setDetailsId(''));
+    if (leftList.current === event.target) dispatch(Details.id.set(''));
   };
 
   function renderItems(): JSX.Element[] {
