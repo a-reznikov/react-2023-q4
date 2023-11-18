@@ -60,7 +60,7 @@ const Pagination: React.FC<EmptyProps> = (): JSX.Element => {
         </li>
         <li className="page-item active">
           <span className="page-link current-page">
-            {page} . . . {lastPage}
+            {page === Pages.page.init ? '' : page} . . . {lastPage}
           </span>
         </li>
         <li

@@ -3,7 +3,7 @@ import type { ActionCreatorWithPayload, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../store';
 
 interface SearchState {
-  value: string;
+  term: string;
 }
 
 export type SetSearch = { payload: string; type: 'search/setSearch' };
@@ -19,7 +19,7 @@ export interface SearchSlice {
 export const initSearchStateValue = String(Date.now());
 
 const initialState: SearchState = {
-  value: initSearchStateValue,
+  term: initSearchStateValue,
 };
 
 export const searchSlice = createSlice({
@@ -27,14 +27,14 @@ export const searchSlice = createSlice({
   initialState,
   reducers: {
     setSearch: (state, action: PayloadAction<string>) => {
-      state.value = action.payload;
+      state.term = action.payload;
     },
   },
 });
 
 export const { setSearch } = searchSlice.actions;
 
-export const selectSearch: Select = (state: RootState) => state.search.value;
+export const selectSearch: Select = (state: RootState) => state.search.term;
 
 export default searchSlice.reducer;
 

@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+import messageReducer from './reducers/message-slice';
 import detailsReducer from './reducers/details-slice';
 import searchReducer from './reducers/search-slice';
 import limitReducer from './reducers/limit-slice';
@@ -12,6 +13,7 @@ export const store = configureStore({
     limit: limitReducer,
     data: dataReducer,
     pages: pagesReducer,
+    message: messageReducer,
   },
 });
 

@@ -15,7 +15,7 @@ import { data } from '../../mocks';
 import App from '../../../components/app';
 import { MemoryRouter } from 'react-router-dom';
 import ItemCard from '../../../components/item-card';
-import { Context } from '../../../components/contexts';
+import { Context } from '../../../components/hooks';
 import { characterTransform, context } from '../../mocks';
 
 const fetchMocker = createFetchMock(vi);

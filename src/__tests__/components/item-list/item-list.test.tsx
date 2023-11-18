@@ -2,7 +2,7 @@ import createFetchMock from 'vitest-fetch-mock';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import ItemList from '../../../components/item-list';
-import { Context } from '../../../components/contexts';
+import { Context } from '../../../components/hooks';
 import { context, contextEmptyData, dataWithTwoCharacter } from '../../mocks';
 
 import { data } from '../../mocks';

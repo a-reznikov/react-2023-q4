@@ -1,28 +1,29 @@
-import { AppContext, EmptyProps } from '../types';
-import { Context, useCreateContext } from '../contexts';
+import { EmptyProps } from '../types';
+import { useInitStore } from '../hooks';
 import { Route, Routes } from 'react-router-dom';
 
 import './app.css';
 import Layout from '../router/layout';
 import Main from '../main';
 import NotFoundPage from '../pages';
+import { useAppSelector } from '../../store/hooks';
+import { Message } from '../../store/reducers/message-slice';
 
 const App: React.FC<EmptyProps> = (): JSX.Element => {
-  const context: AppContext = useCreateContext();
+  useInitStore();
+  const messageError: string = useAppSelector(Message.select);
 
-  if (context.messageError) {
-    throw new Error(context.messageError);
+  if (messageError) {
+    throw new Error(messageError);
   }
 
   return (
-    <Context.Provider value={context}>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Main />} />
-        </Route>
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
-    </Context.Provider>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Main />} />
+      </Route>
+      <Route path="*" element={<NotFoundPage />} />
+    </Routes>
   );
 };
 

@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import ItemDetails from '../../../components/item-details';
-import { Context } from '../../../components/contexts';
+import { Context } from '../../../components/hooks';
 import { context } from '../../mocks';
 
 import { data, dataEmpty } from '../../mocks';

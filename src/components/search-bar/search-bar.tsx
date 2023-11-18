@@ -5,7 +5,7 @@ import { selectSearch, setSearch } from '../../store/reducers/search-slice';
 import { Pages } from '../../store/reducers/pages-slice';
 
 const SearchBar: React.FC<EmptyProps> = (): JSX.Element => {
-  const searchTerm: string = useAppSelector(selectSearch);
+  const term: string = useAppSelector(selectSearch);
   const [currentSearchTerm, setCurrentSearchTerm] = useState<string>('');
   const dispatch = useAppDispatch();
   const page: string = useAppSelector(Pages.page.select);
@@ -13,8 +13,8 @@ const SearchBar: React.FC<EmptyProps> = (): JSX.Element => {
   const firstPage: string = `1`;
 
   useEffect(() => {
-    setCurrentSearchTerm(searchTerm);
-  }, [searchTerm]);
+    setCurrentSearchTerm(term);
+  }, [term]);
 
   const changeSearchTerm: EventChange = (
     event: ChangeEvent<HTMLInputElement>
