@@ -39,11 +39,9 @@ export interface AppContext {
   itemData: Character[];
   page: string;
   lastPage: string;
-  loading: boolean;
   loadingItem: boolean;
   messageError: string;
   setPage: ReactSet;
-  searchData: () => void;
 }
 
 export type HasError = boolean;

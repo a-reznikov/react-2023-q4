@@ -20,7 +20,6 @@ const useCreateContext = (): AppContext => {
   const initLimit: string = searchParams.get('limit') || '10';
 
   const [itemData, setItemData] = useState<Character[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
   const [loadingItem, setLoadingItem] = useState<boolean>(false);
   const [messageError, setMessageError] = useState<string>('');
   const [page, setPage] = useState<string>(searchParams.get('page') || '1');
@@ -29,6 +28,7 @@ const useCreateContext = (): AppContext => {
   const idCard: string = useAppSelector(DetailsId.select);
   const searchTerm: string = useAppSelector(Search.select);
   const limit: string = useAppSelector(Limit.select);
+  const loading: boolean = useAppSelector(Data.loader.select);
 
   const query: Query = {
     name: searchTerm,
@@ -62,12 +62,12 @@ const useCreateContext = (): AppContext => {
   async function searchData(): Promise<void> {
     if (loading) return;
     setSearchParams(query);
-    setLoading(true);
+    dispatch(Data.loader.set(true));
     try {
       const response: ResponseApi = await api.search(searchTerm, limit, page);
-      dispatch(Data.set(response.docs));
+      dispatch(Data.data.set(response.docs));
       setLastPage(`${response.pages}`);
-      setLoading(false);
+      dispatch(Data.loader.set(false));
     } catch (error) {
       if (error instanceof Error) setMessageError(error.message);
     }
@@ -95,11 +95,9 @@ const useCreateContext = (): AppContext => {
     itemData: itemData,
     page: `${page}`,
     lastPage: `${lastPage}`,
-    loading: loading,
     loadingItem: loadingItem,
     messageError: messageError,
     setPage: setPage,
-    searchData: searchData,
   };
 };
 

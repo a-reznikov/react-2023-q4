@@ -6,9 +6,7 @@ export const Context: React.Context<AppContext> =
     itemData: [],
     page: '',
     lastPage: '',
-    loading: false,
     loadingItem: false,
     messageError: '',
     setPage: (): void => {},
-    searchData: (): void => {},
   });

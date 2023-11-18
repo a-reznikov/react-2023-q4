@@ -1,20 +1,18 @@
-import { MouseEvent, useContext, useRef } from 'react';
-import { AppContext, Character, EmptyProps } from '../types';
+import { MouseEvent, useRef } from 'react';
+import { Character, EmptyProps } from '../types';
 
 import './item-list.css';
 import Loader from '../loader';
 import ItemDetails from '../item-details';
-import { Context } from '../contexts';
 import ItemCard from '../item-card';
 import { setDetailsId } from '../../store/reducers/details-slice';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { Data } from '../../store/reducers/data-slice';
 
 const ItemList: React.FC<EmptyProps> = (): JSX.Element => {
-  const context: AppContext = useContext<AppContext>(Context);
   const dispatch = useAppDispatch();
-  const data: Character[] = useAppSelector(Data.select);
-  const { loading } = context;
+  const data: Character[] = useAppSelector(Data.data.select);
+  const loading: boolean = useAppSelector(Data.loader.select);
   const leftList: React.MutableRefObject<null> = useRef(null);
 
   const onCloseDetails = (event: MouseEvent<HTMLDivElement>): void => {

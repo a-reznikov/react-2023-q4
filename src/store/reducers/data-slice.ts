@@ -4,20 +4,30 @@ import type { RootState } from '../store';
 import { Character } from '../../components/types';
 
 interface DataState {
-  value: Character[];
+  data: Character[];
+  loader: boolean;
 }
 
 export type SetData = { payload: Character[]; type: 'data/setData' };
+export type SetLoader = { payload: boolean; type: 'data/setLoader' };
 
-type Select = (state: RootState) => Character[];
+type SelectCharacter = (state: RootState) => Character[];
+type SelectLoader = (state: RootState) => boolean;
 
 export interface DataSlice {
-  set: ActionCreatorWithPayload<Character[], 'data/setData'>;
-  select: Select;
+  data: {
+    set: ActionCreatorWithPayload<Character[], 'data/setData'>;
+    select: SelectCharacter;
+  };
+  loader: {
+    set: ActionCreatorWithPayload<boolean, 'data/setLoader'>;
+    select: SelectLoader;
+  };
 }
 
 const initialState: DataState = {
-  value: [],
+  data: [],
+  loader: false,
 };
 
 export const dataSlice = createSlice({
@@ -25,18 +35,31 @@ export const dataSlice = createSlice({
   initialState,
   reducers: {
     setData: (state, action: PayloadAction<Character[]>) => {
-      state.value = action.payload;
+      state.data = action.payload;
+    },
+    setLoader: (state, action: PayloadAction<boolean>) => {
+      state.loader = action.payload;
     },
   },
 });
 
 export const { setData } = dataSlice.actions;
+export const { setLoader } = dataSlice.actions;
 
-export const selectData: Select = (state: RootState) => state.data.value;
+export const selectData: SelectCharacter = (state: RootState) =>
+  state.data.data;
+export const selectLoader: SelectLoader = (state: RootState) =>
+  state.data.loader;
 
 export default dataSlice.reducer;
 
 export const Data: DataSlice = {
-  set: setData,
-  select: selectData,
+  data: {
+    set: setData,
+    select: selectData,
+  },
+  loader: {
+    set: setLoader,
+    select: selectLoader,
+  },
 };
