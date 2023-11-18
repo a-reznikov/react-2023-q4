@@ -1,23 +1,18 @@
-import { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
 import './pagination.css';
-import {
-  AppContext,
-  EmptyProps,
-  EventChange,
-  EventForm,
-  FunctionVoid,
-} from '../types';
-import { Context } from '../contexts';
+import { EmptyProps, EventChange, EventForm, FunctionVoid } from '../types';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { Limit } from '../../store/reducers/limit-slice';
+import { Pages } from '../../store/reducers/pages-slice';
 
 const Pagination: React.FC<EmptyProps> = (): JSX.Element => {
   const dispatch = useAppDispatch();
 
-  const context: AppContext = useContext<AppContext>(Context);
   const limit: string = useAppSelector(Limit.select);
-  const { page, setPage, lastPage } = context;
+  const page: string = useAppSelector(Pages.page.select);
+  const lastPage: string = useAppSelector(Pages.lastPage.select);
+
   const [currentLimit, setCurrentLimit] = useState<string>('');
   const firstPage: string = `1`;
 
@@ -29,7 +24,7 @@ const Pagination: React.FC<EmptyProps> = (): JSX.Element => {
     event: FormEvent<HTMLFormElement>
   ): void => {
     event.preventDefault();
-    setPage(firstPage);
+    dispatch(Pages.page.set(firstPage));
     dispatch(Limit.set(currentLimit));
   };
 
@@ -42,14 +37,14 @@ const Pagination: React.FC<EmptyProps> = (): JSX.Element => {
   const onPrevPage: FunctionVoid = (): void => {
     const prevPage: string = `${+page - +firstPage}`;
     if (+page > +firstPage) {
-      setPage(prevPage);
+      dispatch(Pages.page.set(prevPage));
     }
   };
 
   const onNextPage: FunctionVoid = (): void => {
     const nextPage: string = `${+page + +firstPage}`;
     if (+page < +lastPage) {
-      setPage(nextPage);
+      dispatch(Pages.page.set(nextPage));
     }
   };
 

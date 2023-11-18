@@ -43,8 +43,7 @@ export const dataSlice = createSlice({
   },
 });
 
-export const { setData } = dataSlice.actions;
-export const { setLoader } = dataSlice.actions;
+export const { setData, setLoader } = dataSlice.actions;
 
 export const selectData: SelectCharacter = (state: RootState) =>
   state.data.data;

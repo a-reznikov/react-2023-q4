@@ -36,10 +36,7 @@ export type EventChange = (event: ChangeEvent<HTMLInputElement>) => void;
 export type FunctionVoid = () => void;
 
 export interface AppContext {
-  page: string;
-  lastPage: string;
   messageError: string;
-  setPage: ReactSet;
 }
 
 export type HasError = boolean;

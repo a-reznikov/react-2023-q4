@@ -54,9 +54,7 @@ export const detailsSlice = createSlice({
   },
 });
 
-export const { setId } = detailsSlice.actions;
-export const { setData } = detailsSlice.actions;
-export const { setLoader } = detailsSlice.actions;
+export const { setId, setData, setLoader } = detailsSlice.actions;
 
 export const selectDetailsId: Select = (state: RootState) => state.details.id;
 export const selectData: SelectCharacter = (state: RootState) =>

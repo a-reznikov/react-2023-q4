@@ -1,15 +1,15 @@
-import { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react';
-import { AppContext, EmptyProps, EventChange, EventForm } from '../types';
-import { Context } from '../contexts';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { EmptyProps, EventChange, EventForm } from '../types';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { selectSearch, setSearch } from '../../store/reducers/search-slice';
+import { Pages } from '../../store/reducers/pages-slice';
 
 const SearchBar: React.FC<EmptyProps> = (): JSX.Element => {
   const searchTerm: string = useAppSelector(selectSearch);
   const [currentSearchTerm, setCurrentSearchTerm] = useState<string>('');
   const dispatch = useAppDispatch();
-  const context: AppContext = useContext<AppContext>(Context);
-  const { page, setPage } = context;
+  const page: string = useAppSelector(Pages.page.select);
+
   const firstPage: string = `1`;
 
   useEffect(() => {
@@ -24,7 +24,7 @@ const SearchBar: React.FC<EmptyProps> = (): JSX.Element => {
 
   const onSearchTerm: EventForm = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
-    if (page !== firstPage) setPage(firstPage);
+    if (page !== firstPage) dispatch(Pages.page.set(firstPage));
     dispatch(setSearch(currentSearchTerm));
     localStorage.setItem('termForSearching', currentSearchTerm);
   };

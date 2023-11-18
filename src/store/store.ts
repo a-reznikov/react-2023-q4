@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import detailsReducer from './reducers/details-slice';
 import searchReducer from './reducers/search-slice';
 import limitReducer from './reducers/limit-slice';
+import pagesReducer from './reducers/pages-slice';
 import dataReducer from './reducers/data-slice';
 
 export const store = configureStore({
@@ -10,6 +11,7 @@ export const store = configureStore({
     search: searchReducer,
     limit: limitReducer,
     data: dataReducer,
+    pages: pagesReducer,
   },
 });
 

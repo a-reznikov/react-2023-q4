@@ -8,6 +8,7 @@ import { Details } from '../../store/reducers/details-slice';
 import { Search } from '../../store/reducers/search-slice';
 import { Limit } from '../../store/reducers/limit-slice';
 import { Data } from '../../store/reducers/data-slice';
+import { Pages } from '../../store/reducers/pages-slice';
 const api: Api = new Api();
 
 const useCreateContext = (): AppContext => {
@@ -18,14 +19,14 @@ const useCreateContext = (): AppContext => {
   const initTerm: string =
     searchParams.get('name') || localStorage.getItem('termForSearching') || '';
   const initLimit: string = searchParams.get('limit') || '10';
+  const initPage: string = searchParams.get('page') || '1';
 
   const [messageError, setMessageError] = useState<string>('');
-  const [page, setPage] = useState<string>(searchParams.get('page') || '1');
-  const [lastPage, setLastPage] = useState<string>('');
 
   const idCard: string = useAppSelector(Details.id.select);
   const searchTerm: string = useAppSelector(Search.select);
   const limit: string = useAppSelector(Limit.select);
+  const page: string = useAppSelector(Pages.page.select);
   const loading: boolean = useAppSelector(Data.loader.select);
   const loadingDetails: boolean = useAppSelector(Details.loader.select);
 
@@ -49,12 +50,21 @@ const useCreateContext = (): AppContext => {
   }, [dispatch, initLimit]);
 
   useEffect((): void => {
+    dispatch(Pages.page.set(initPage));
+  }, [dispatch, initPage]);
+
+  useEffect((): void => {
     getItemData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idCard]);
 
   useEffect((): void => {
-    if (Search.init !== searchTerm && Limit.init !== limit) searchData();
+    if (
+      Search.init !== searchTerm &&
+      Limit.init !== limit &&
+      Pages.page.init !== page
+    )
+      searchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, limit, searchTerm]);
 
@@ -65,7 +75,7 @@ const useCreateContext = (): AppContext => {
     try {
       const response: ResponseApi = await api.search(searchTerm, limit, page);
       dispatch(Data.data.set(response.docs));
-      setLastPage(`${response.pages}`);
+      dispatch(Pages.lastPage.set(`${response.pages}`));
       dispatch(Data.loader.set(false));
     } catch (error) {
       if (error instanceof Error) setMessageError(error.message);
@@ -91,10 +101,7 @@ const useCreateContext = (): AppContext => {
   }
 
   return {
-    page: `${page}`,
-    lastPage: `${lastPage}`,
     messageError: messageError,
-    setPage: setPage,
   };
 };
 
