@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { DetailsId } from '../../store/reducers/details-slice';
 import { Search } from '../../store/reducers/search-slice';
 import { Limit } from '../../store/reducers/limit-slice';
+import { Data } from '../../store/reducers/data-slice';
 const api: Api = new Api();
 
 const useCreateContext = (): AppContext => {
@@ -17,7 +18,7 @@ const useCreateContext = (): AppContext => {
   const initTerm: string =
     searchParams.get('name') || localStorage.getItem('termForSearching') || '';
   const initLimit: string = searchParams.get('limit') || '10';
-  const [data, setData] = useState<Character[]>([]);
+
   const [itemData, setItemData] = useState<Character[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [loadingItem, setLoadingItem] = useState<boolean>(false);
@@ -28,6 +29,7 @@ const useCreateContext = (): AppContext => {
   const idCard: string = useAppSelector(DetailsId.select);
   const searchTerm: string = useAppSelector(Search.select);
   const limit: string = useAppSelector(Limit.select);
+
   const query: Query = {
     name: searchTerm,
     page: page,
@@ -63,7 +65,7 @@ const useCreateContext = (): AppContext => {
     setLoading(true);
     try {
       const response: ResponseApi = await api.search(searchTerm, limit, page);
-      setData(response.docs);
+      dispatch(Data.set(response.docs));
       setLastPage(`${response.pages}`);
       setLoading(false);
     } catch (error) {
@@ -90,7 +92,6 @@ const useCreateContext = (): AppContext => {
   }
 
   return {
-    data: data,
     itemData: itemData,
     page: `${page}`,
     lastPage: `${lastPage}`,

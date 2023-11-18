@@ -3,7 +3,6 @@ import { AppContext } from '../types';
 
 export const Context: React.Context<AppContext> =
   React.createContext<AppContext>({
-    data: [],
     itemData: [],
     page: '',
     lastPage: '',

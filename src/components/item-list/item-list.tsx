@@ -7,12 +7,14 @@ import ItemDetails from '../item-details';
 import { Context } from '../contexts';
 import ItemCard from '../item-card';
 import { setDetailsId } from '../../store/reducers/details-slice';
-import { useAppDispatch } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { Data } from '../../store/reducers/data-slice';
 
 const ItemList: React.FC<EmptyProps> = (): JSX.Element => {
   const context: AppContext = useContext<AppContext>(Context);
   const dispatch = useAppDispatch();
-  const { data, loading } = context;
+  const data: Character[] = useAppSelector(Data.select);
+  const { loading } = context;
   const leftList: React.MutableRefObject<null> = useRef(null);
 
   const onCloseDetails = (event: MouseEvent<HTMLDivElement>): void => {

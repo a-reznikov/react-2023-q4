@@ -36,7 +36,6 @@ export type EventChange = (event: ChangeEvent<HTMLInputElement>) => void;
 export type FunctionVoid = () => void;
 
 export interface AppContext {
-  data: Character[];
   itemData: Character[];
   page: string;
   lastPage: string;
