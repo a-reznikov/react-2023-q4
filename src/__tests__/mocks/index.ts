@@ -1,4 +1,4 @@
-import { AppContext, Character, ResponseApi } from '../../components/types';
+import { Character, ResponseApi } from '../../components/types';
 
 export const characterTransform: Character = {
   _id: '5cd99d4bde30eff6ebccfea0',
@@ -183,22 +183,4 @@ export const dataTransform: ResponseApi = {
   limit: 10,
   page: 1,
   pages: 1,
-};
-
-export const context: AppContext = {
-  data: data.docs,
-  itemData: [characterTransform],
-  page: '',
-  lastPage: '',
-  loading: false,
-  loadingItem: false,
-  messageError: '',
-  setPage: (): void => {},
-  searchData: (): void => {},
-};
-
-export const contextEmptyData: AppContext = {
-  ...context,
-  data: [],
-  itemData: [],
 };

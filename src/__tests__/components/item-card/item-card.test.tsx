@@ -58,8 +58,8 @@ describe('Tests for the Card component', (): void => {
 
 const { name, gender, race, birth } = characterTransform;
 
-describe('Tests for the Card component', () => {
-  test('Ensure that the card component renders the relevant card data', () => {
+describe('Tests for the Card component', (): void => {
+  test('Ensure that the card component renders the relevant card data', (): void => {
     render(
       <Provider store={store}>
         <ItemCard character={characterTransform} />
@@ -71,7 +71,7 @@ describe('Tests for the Card component', () => {
     expect(screen.getByText(`Birth: ${birth}`)).toBeDefined();
   });
 
-  test('Check that clicking triggers setId with current id card', async () => {
+  test('Check that clicking triggers setId with current id card', async (): Promise<void> => {
     afterEach((): void => {
       vi.restoreAllMocks();
     });

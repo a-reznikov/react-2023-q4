@@ -2,12 +2,10 @@ import createFetchMock from 'vitest-fetch-mock';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Provider } from 'react-redux';
+import { store } from '../../../store/store';
 
-import ItemDetails from '../../../components/item-details';
-import { Context } from '../../../components/hooks';
-import { context } from '../../mocks';
-
-import { data, dataEmpty } from '../../mocks';
+import { characterTransform, data, dataEmpty } from '../../mocks';
 import App from '../../../components/app';
 import { MemoryRouter } from 'react-router-dom';
 
@@ -24,7 +22,9 @@ describe('Tests for the Detailed Card component', (): void => {
 
     render(
       <MemoryRouter>
-        <App />
+        <Provider store={store}>
+          <App />
+        </Provider>
       </MemoryRouter>
     );
     const items: HTMLElement[] = await screen.findAllByTestId('item-card');
@@ -39,19 +39,25 @@ describe('Tests for the Detailed Card component', (): void => {
 });
 
 const { birth, death, gender, hair, height, name, race, realm, spouse } =
-  context.itemData[0];
+  characterTransform;
 
-describe('Tests for the Detailed Card component', () => {
-  test('Make sure the detailed card component correctly displays the detailed card data', () => {
+describe('Tests for the Detailed Card component', (): void => {
+  test('Make sure the detailed card component correctly displays the detailed card data', async (): Promise<void> => {
     render(
-      <Context.Provider value={context}>
-        <ItemDetails />
-      </Context.Provider>
+      <MemoryRouter>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </MemoryRouter>
     );
-    expect(screen.getByText(`${name}`)).toBeDefined();
-    expect(screen.getByText(`Gender: ${gender}`)).toBeDefined();
-    expect(screen.getByText(`Race: ${race}`)).toBeDefined();
-    expect(screen.getByText(`Birth: ${birth}`)).toBeDefined();
+    const items: HTMLElement[] = await screen.findAllByTestId('item-card');
+    expect(screen.queryByTestId('item-details')).toBeNull();
+    await userEvent.click(items[0]);
+    expect(screen.queryByTestId('item-details')).toBeDefined();
+    expect(screen.getAllByText(`${name}`)).toBeDefined();
+    expect(screen.getAllByText(`Gender: ${gender}`)).toBeDefined();
+    expect(screen.getAllByText(`Race: ${race}`)).toBeDefined();
+    expect(screen.getAllByText(`Birth: ${birth}`)).toBeDefined();
     expect(screen.getByText(`Death: ${death}`)).toBeDefined();
     expect(screen.getByText(`Hair: ${hair}`)).toBeDefined();
     expect(screen.getByText(`Height: ${height}`)).toBeDefined();

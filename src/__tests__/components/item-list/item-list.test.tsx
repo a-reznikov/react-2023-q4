@@ -1,9 +1,9 @@
 import createFetchMock from 'vitest-fetch-mock';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import ItemList from '../../../components/item-list';
-import { Context } from '../../../components/hooks';
-import { context, contextEmptyData, dataWithTwoCharacter } from '../../mocks';
+import { Provider } from 'react-redux';
+import { store } from '../../../store/store';
+import { dataEmpty, dataWithTwoCharacter } from '../../mocks';
 
 import { data } from '../../mocks';
 import App from '../../../components/app';
@@ -23,7 +23,9 @@ describe('Tests for the Card List component', (): void => {
 
     render(
       <MemoryRouter>
-        <App />
+        <Provider store={store}>
+          <App />
+        </Provider>
       </MemoryRouter>
     );
     const threeItems: HTMLElement[] = await screen.findAllByTestId('item-card');
@@ -39,12 +41,15 @@ describe('Tests for the Card List component', (): void => {
   });
 });
 
-describe('Tests for the Card List component', () => {
-  test('Check that an appropriate message is displayed if no cards are present.', () => {
+describe('Tests for the Card List component', (): void => {
+  test('Check that an appropriate message is displayed if no cards are present.', (): void => {
+    fetchMocker.mockResponse(JSON.stringify(dataEmpty));
     render(
-      <Context.Provider value={contextEmptyData}>
-        <ItemList />
-      </Context.Provider>
+      <MemoryRouter>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </MemoryRouter>
     );
 
     expect(
@@ -52,11 +57,14 @@ describe('Tests for the Card List component', () => {
     ).toBeDefined();
   });
 
-  test('Verify static number of cards', async () => {
+  test('Verify static number of cards', async (): Promise<void> => {
+    fetchMocker.mockResponse(JSON.stringify(data));
     render(
-      <Context.Provider value={context}>
-        <ItemList />
-      </Context.Provider>
+      <MemoryRouter>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </MemoryRouter>
     );
     const items: HTMLElement[] = await screen.findAllByTestId('item-card');
     expect(items.length).toBe(3);

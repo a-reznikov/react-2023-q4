@@ -2,6 +2,8 @@ import createFetchMock from 'vitest-fetch-mock';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Provider } from 'react-redux';
+import { store } from '../../../store/store';
 
 import { dataFirstPage } from '../../mocks';
 import App from '../../../components/app';
@@ -20,7 +22,9 @@ describe('Tests for the Pagination component', (): void => {
 
     render(
       <BrowserRouter>
-        <App />
+        <Provider store={store}>
+          <App />
+        </Provider>
       </BrowserRouter>
     );
 

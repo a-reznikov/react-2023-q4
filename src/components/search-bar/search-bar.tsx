@@ -12,7 +12,7 @@ const SearchBar: React.FC<EmptyProps> = (): JSX.Element => {
 
   const firstPage: string = `1`;
 
-  useEffect(() => {
+  useEffect((): void => {
     setCurrentSearchTerm(term);
   }, [term]);
 

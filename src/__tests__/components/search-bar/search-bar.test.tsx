@@ -2,6 +2,8 @@ import createFetchMock from 'vitest-fetch-mock';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Provider } from 'react-redux';
+import { store } from '../../../store/store';
 
 import { data } from '../../mocks';
 import App from '../../../components/app';
@@ -20,7 +22,9 @@ describe('Tests for the Search component', (): void => {
 
     render(
       <MemoryRouter>
-        <App />
+        <Provider store={store}>
+          <App />
+        </Provider>
       </MemoryRouter>
     );
     const searchButton: HTMLElement = screen.getByTestId('search-button');
@@ -35,7 +39,9 @@ describe('Tests for the Search component', (): void => {
 
     const { unmount } = render(
       <MemoryRouter>
-        <App />
+        <Provider store={store}>
+          <App />
+        </Provider>
       </MemoryRouter>
     );
     const searchButton: HTMLElement = screen.getByTestId('search-button');
@@ -49,7 +55,9 @@ describe('Tests for the Search component', (): void => {
 
     render(
       <MemoryRouter>
-        <App />
+        <Provider store={store}>
+          <App />
+        </Provider>
       </MemoryRouter>
     );
     expect(localStorage.getItem('termForSearching')).toEqual('Gandalf');
