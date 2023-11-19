@@ -7,6 +7,8 @@ import { data } from '../../mocks';
 import App from '../../../components/app';
 import { MemoryRouter } from 'react-router-dom';
 import ErrorBoundry from '../../../components/error-boundry';
+import { Provider } from 'react-redux';
+import { store } from '../../../store/store';
 
 const fetchMocker = createFetchMock(vi);
 fetchMocker.enableMocks();
@@ -26,7 +28,9 @@ describe('Tests for the ErrorBoundry', (): void => {
     render(
       <ErrorBoundry>
         <MemoryRouter>
-          <App />
+          <Provider store={store}>
+            <App />
+          </Provider>
         </MemoryRouter>
       </ErrorBoundry>
     );

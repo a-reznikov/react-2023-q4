@@ -1,22 +1,16 @@
 import createFetchMock from 'vitest-fetch-mock';
-import {
-  SpyInstance,
-  afterEach,
-  beforeEach,
-  describe,
-  expect,
-  test,
-  vi,
-} from 'vitest';
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Provider } from 'react-redux';
+import { store } from '../../../store/store';
 
 import { data } from '../../mocks';
 import App from '../../../components/app';
 import { MemoryRouter } from 'react-router-dom';
 import ItemCard from '../../../components/item-card';
-import { Context } from '../../../components/hooks';
-import { characterTransform, context } from '../../mocks';
+import { characterTransform } from '../../mocks';
+import { Details } from '../../../store/reducers/details-slice';
 
 const fetchMocker = createFetchMock(vi);
 fetchMocker.enableMocks();
@@ -31,10 +25,11 @@ describe('Tests for the Card component', (): void => {
 
     render(
       <MemoryRouter>
-        <App />
+        <Provider store={store}>
+          <App />
+        </Provider>
       </MemoryRouter>
     );
-
     const items: HTMLElement[] = await screen.findAllByTestId('item-card');
     expect(screen.queryByTestId('item-details')).toBeNull();
     await userEvent.click(items[0]);
@@ -46,16 +41,17 @@ describe('Tests for the Card component', (): void => {
 
     render(
       <MemoryRouter>
-        <App />
+        <Provider store={store}>
+          <App />
+        </Provider>
       </MemoryRouter>
     );
-
-    expect(fetchMocker).toHaveBeenCalledTimes(1);
+    expect(fetchMocker).toHaveBeenCalledTimes(0);
     const items: HTMLElement[] = await screen.findAllByTestId('item-card');
-    await userEvent.click(items[0]);
-    expect(fetchMocker).toHaveBeenCalledTimes(2);
-    expect(fetchMocker.requests()[1].url).toEqual(
-      `https://the-one-api.dev/v2/character/5cd99d4bde30eff6ebccfea0`
+    await userEvent.click(items[1]);
+    expect(fetchMocker).toHaveBeenCalledTimes(1);
+    expect(fetchMocker.requests()[0].url).toEqual(
+      `https://the-one-api.dev/v2/character/5cd99d4bde30eff6ebccfd8a`
     );
   });
 });
@@ -65,9 +61,9 @@ const { name, gender, race, birth } = characterTransform;
 describe('Tests for the Card component', () => {
   test('Ensure that the card component renders the relevant card data', () => {
     render(
-      <Context.Provider value={context}>
+      <Provider store={store}>
         <ItemCard character={characterTransform} />
-      </Context.Provider>
+      </Provider>
     );
     expect(screen.getByText(`${name}`)).toBeDefined();
     expect(screen.getByText(`Gender: ${gender}`)).toBeDefined();
@@ -79,12 +75,11 @@ describe('Tests for the Card component', () => {
     afterEach((): void => {
       vi.restoreAllMocks();
     });
-    const spy: SpyInstance<[value: React.SetStateAction<string>], void> =
-      vi.spyOn(context, 'setId');
+    const spy = vi.spyOn(Details.id, 'set');
     render(
-      <Context.Provider value={context}>
+      <Provider store={store}>
         <ItemCard character={characterTransform} />
-      </Context.Provider>
+      </Provider>
     );
 
     await userEvent.click(screen.getByTestId('item-card'));
