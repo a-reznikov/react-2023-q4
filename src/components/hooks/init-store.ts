@@ -10,6 +10,7 @@ import { Search } from '../../store/reducers/search-slice';
 import { Limit } from '../../store/reducers/limit-slice';
 import { Pages } from '../../store/reducers/pages-slice';
 import { Data } from '../../store/reducers/data-slice';
+import { useGetDataByIdQuery } from '../../store/reducers/api-slice';
 const api: Api = new Api();
 
 const useInitStore = (): void => {
@@ -27,7 +28,11 @@ const useInitStore = (): void => {
   const limit: string = useAppSelector(Limit.select);
   const page: string = useAppSelector(Pages.page.select);
   const loading: boolean = useAppSelector(Data.loader.select);
-  const loadingDetails: boolean = useAppSelector(Details.loader.select);
+  const {
+    data: dataDetails,
+    isLoading: isLoadingDetails,
+    isFetching: isFetchingDetails,
+  } = useGetDataByIdQuery(id);
 
   const query: Query = { name: term, page: page, limit: limit, id: id };
 
@@ -48,9 +53,18 @@ const useInitStore = (): void => {
   }, [dispatch, initPage]);
 
   useEffect((): void => {
-    getItemData();
+    if (isLoadingDetails) return;
+    setSearchParams(query);
+    dispatch(Details.loader.set(isFetchingDetails));
+    if (!id) {
+      dispatch(Details.data.set([]));
+      dispatch(Details.loader.set(false));
+    } else {
+      if (!isFetchingDetails && dataDetails && id)
+        dispatch(Details.data.set(dataDetails.docs));
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+  }, [dataDetails, id, isFetchingDetails, isLoadingDetails]);
 
   useEffect((): void => {
     if (
@@ -73,24 +87,6 @@ const useInitStore = (): void => {
       dispatch(Data.loader.set(false));
     } catch (error) {
       if (error instanceof Error) dispatch(Message.set(error.message));
-    }
-  }
-
-  async function getItemData(): Promise<void> {
-    if (loadingDetails) return;
-    setSearchParams(query);
-    dispatch(Details.loader.set(true));
-    if (!id) {
-      dispatch(Details.data.set([]));
-      dispatch(Details.loader.set(false));
-    } else {
-      try {
-        const response: ResponseApi = await api.getItemByID(id);
-        dispatch(Details.data.set(response.docs));
-        dispatch(Details.loader.set(false));
-      } catch (error) {
-        if (error instanceof Error) dispatch(Message.set(error.message));
-      }
     }
   }
 };

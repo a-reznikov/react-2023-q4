@@ -5,6 +5,7 @@ import searchReducer from './reducers/search-slice';
 import limitReducer from './reducers/limit-slice';
 import pagesReducer from './reducers/pages-slice';
 import dataReducer from './reducers/data-slice';
+import { apiSlice } from './reducers/api-slice';
 
 export const store = configureStore({
   reducer: {
@@ -14,7 +15,10 @@ export const store = configureStore({
     data: dataReducer,
     pages: pagesReducer,
     message: messageReducer,
+    [apiSlice.reducerPath]: apiSlice.reducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(apiSlice.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
