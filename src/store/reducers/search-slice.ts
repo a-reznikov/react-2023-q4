@@ -19,7 +19,7 @@ export interface SearchSlice {
 export const initSearchStateValue = String(Date.now());
 
 const initialState: SearchState = {
-  term: initSearchStateValue,
+  term: '',
 };
 
 export const searchSlice = createSlice({

@@ -58,9 +58,10 @@ export const apiSlice = createApi({
     },
   }),
   endpoints: (builder) => ({
-    getData: builder.query<Response, SearchQuery>({
+    getData: builder.query<ResponseApi, SearchQuery>({
       query: ({ term, limit, page }) =>
         `/character?name=/${term}/i&page=${page || '1'}&limit=${limit || '10'}`,
+      transformResponse: (response: ResponseApi) => transformData(response),
     }),
     getDataById: builder.query<ResponseApi, string>({
       query: (id) => `/character/${id}`,

@@ -1,17 +1,17 @@
 import { useEffect } from 'react';
-import { ResponseApi, Query } from '../types';
+import { Query } from '../types';
 import { useSearchParams } from 'react-router-dom';
 
-import Api from '../../services/api';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { Message } from '../../store/reducers/message-slice';
 import { Details } from '../../store/reducers/details-slice';
 import { Search } from '../../store/reducers/search-slice';
 import { Limit } from '../../store/reducers/limit-slice';
 import { Pages } from '../../store/reducers/pages-slice';
 import { Data } from '../../store/reducers/data-slice';
-import { useGetDataByIdQuery } from '../../store/reducers/api-slice';
-const api: Api = new Api();
+import {
+  useGetDataByIdQuery,
+  useGetDataQuery,
+} from '../../store/reducers/api-slice';
 
 const useInitStore = (): void => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -27,14 +27,22 @@ const useInitStore = (): void => {
   const term: string = useAppSelector(Search.select);
   const limit: string = useAppSelector(Limit.select);
   const page: string = useAppSelector(Pages.page.select);
-  const loading: boolean = useAppSelector(Data.loader.select);
+
+  const query: Query = { name: term, page: page, limit: limit, id: id };
+
+  const {
+    data: dataList,
+    error: errorList,
+    isLoading: isLoadingList,
+    isFetching: isFetchingList,
+  } = useGetDataQuery({ term, limit, page });
+
   const {
     data: dataDetails,
+    error: errorDetails,
     isLoading: isLoadingDetails,
     isFetching: isFetchingDetails,
   } = useGetDataByIdQuery(id);
-
-  const query: Query = { name: term, page: page, limit: limit, id: id };
 
   useEffect((): void => {
     dispatch(Details.id.set(initId));
@@ -53,6 +61,12 @@ const useInitStore = (): void => {
   }, [dispatch, initPage]);
 
   useEffect((): void => {
+    // const error: FetchBaseQueryError | SerializedError | undefined =
+    //   errorDetails || errorList;
+    // dispatch(Message.set(error.data.message));
+  }, [dispatch, errorDetails, errorList]);
+
+  useEffect((): void => {
     if (isLoadingDetails) return;
     setSearchParams(query);
     dispatch(Details.loader.set(isFetchingDetails));
@@ -64,31 +78,19 @@ const useInitStore = (): void => {
         dispatch(Details.data.set(dataDetails.docs));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dataDetails, id, isFetchingDetails, isLoadingDetails]);
+  }, [id, isFetchingDetails, isLoadingDetails, dataDetails]);
 
   useEffect((): void => {
-    if (
-      Search.init !== term &&
-      Limit.init !== limit &&
-      Pages.page.init !== page
-    )
-      searchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, limit, term]);
-
-  async function searchData(): Promise<void> {
-    if (loading) return;
+    if (isLoadingList) return;
     setSearchParams(query);
     dispatch(Data.loader.set(true));
-    try {
-      const response: ResponseApi = await api.search(term, limit, page);
-      dispatch(Data.data.set(response.docs));
-      dispatch(Pages.lastPage.set(`${response.pages}`));
+    if (!isFetchingList && dataList) {
+      dispatch(Data.data.set(dataList.docs));
+      dispatch(Pages.lastPage.set(`${dataList.pages}`));
       dispatch(Data.loader.set(false));
-    } catch (error) {
-      if (error instanceof Error) dispatch(Message.set(error.message));
     }
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, limit, term, isLoadingList, isLoadingList, dataList]);
 };
 
 export default useInitStore;

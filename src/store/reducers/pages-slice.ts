@@ -27,7 +27,7 @@ export interface PagesSlice {
 export const initPageStateValue: string = String(Date.now());
 
 const initialState: PagesState = {
-  page: initPageStateValue,
+  page: '',
   lastPage: '',
 };
 

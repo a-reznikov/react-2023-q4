@@ -19,7 +19,7 @@ export interface LimitSlice {
 export const initLimitStateValue: string = String(Date.now());
 
 const initialState: LimitState = {
-  value: initLimitStateValue,
+  value: '',
 };
 
 export const limitSlice = createSlice({
