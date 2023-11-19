@@ -3,6 +3,7 @@ import { Query } from '../types';
 import { useSearchParams } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { Message } from '../../store/reducers/message-slice';
 import { Details } from '../../store/reducers/details-slice';
 import { Search } from '../../store/reducers/search-slice';
 import { Limit } from '../../store/reducers/limit-slice';
@@ -12,6 +13,8 @@ import {
   useGetDataByIdQuery,
   useGetDataQuery,
 } from '../../store/reducers/api-slice';
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
+import { SerializedError } from '@reduxjs/toolkit';
 
 const useInitStore = (): void => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -35,14 +38,14 @@ const useInitStore = (): void => {
     error: errorList,
     isLoading: isLoadingList,
     isFetching: isFetchingList,
-  } = useGetDataQuery({ term, limit, page });
+  } = useGetDataQuery({ term, limit, page }, { skip: !limit });
 
   const {
     data: dataDetails,
     error: errorDetails,
     isLoading: isLoadingDetails,
     isFetching: isFetchingDetails,
-  } = useGetDataByIdQuery(id);
+  } = useGetDataByIdQuery(id, { skip: !id });
 
   useEffect((): void => {
     dispatch(Details.id.set(initId));
@@ -61,15 +64,29 @@ const useInitStore = (): void => {
   }, [dispatch, initPage]);
 
   useEffect((): void => {
-    // const error: FetchBaseQueryError | SerializedError | undefined =
-    //   errorDetails || errorList;
-    // dispatch(Message.set(error.data.message));
+    const error: FetchBaseQueryError | SerializedError | undefined =
+      errorDetails || errorList;
+    if (
+      error &&
+      'data' in error &&
+      typeof error.data === 'object' &&
+      error.data &&
+      'message' in error.data &&
+      typeof error.data.message === 'string'
+    ) {
+      dispatch(Message.set(error.data.message));
+    } else if (
+      typeof error === 'object' &&
+      error !== null &&
+      'error' in error
+    ) {
+      dispatch(Message.set(error.error));
+    }
   }, [dispatch, errorDetails, errorList]);
 
   useEffect((): void => {
-    if (isLoadingDetails) return;
     setSearchParams(query);
-    dispatch(Details.loader.set(isFetchingDetails));
+    dispatch(Details.loader.set(isLoadingDetails || isFetchingDetails));
     if (!id) {
       dispatch(Details.data.set([]));
       dispatch(Details.loader.set(false));
@@ -81,16 +98,15 @@ const useInitStore = (): void => {
   }, [id, isFetchingDetails, isLoadingDetails, dataDetails]);
 
   useEffect((): void => {
-    if (isLoadingList) return;
     setSearchParams(query);
-    dispatch(Data.loader.set(true));
+    dispatch(Data.loader.set(isLoadingList || isFetchingList));
     if (!isFetchingList && dataList) {
       dispatch(Data.data.set(dataList.docs));
       dispatch(Pages.lastPage.set(`${dataList.pages}`));
       dispatch(Data.loader.set(false));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, limit, term, isLoadingList, isLoadingList, dataList]);
+  }, [page, limit, term, isLoadingList, isFetchingList, dataList]);
 };
 
 export default useInitStore;
