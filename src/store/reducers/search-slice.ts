@@ -12,11 +12,8 @@ type Select = (state: RootState) => string;
 
 export interface SearchSlice {
   set: ActionCreatorWithPayload<string, 'search/setSearch'>;
-  init: string;
   select: Select;
 }
-
-export const initSearchStateValue = String(Date.now());
 
 const initialState: SearchState = {
   term: '',
@@ -40,6 +37,5 @@ export default searchSlice.reducer;
 
 export const Search: SearchSlice = {
   set: setSearch,
-  init: initSearchStateValue,
   select: selectSearch,
 };

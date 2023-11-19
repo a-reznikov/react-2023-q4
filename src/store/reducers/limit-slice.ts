@@ -12,11 +12,8 @@ type Select = (state: RootState) => string;
 
 export interface LimitSlice {
   set: ActionCreatorWithPayload<string, 'limit/setLimit'>;
-  init: string;
   select: Select;
 }
-
-export const initLimitStateValue: string = String(Date.now());
 
 const initialState: LimitState = {
   value: '',
@@ -40,6 +37,5 @@ export default limitSlice.reducer;
 
 export const Limit: LimitSlice = {
   set: setLimit,
-  init: initLimitStateValue,
   select: selectLimit,
 };

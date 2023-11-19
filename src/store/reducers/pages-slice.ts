@@ -15,7 +15,6 @@ type Select = (state: RootState) => string;
 export interface PagesSlice {
   page: {
     set: ActionCreatorWithPayload<string, 'pages/setPage'>;
-    init: string;
     select: Select;
   };
   lastPage: {
@@ -23,8 +22,6 @@ export interface PagesSlice {
     select: Select;
   };
 }
-
-export const initPageStateValue: string = String(Date.now());
 
 const initialState: PagesState = {
   page: '',
@@ -55,7 +52,6 @@ export default pagesSlice.reducer;
 export const Pages: PagesSlice = {
   page: {
     set: setPage,
-    init: initPageStateValue,
     select: selectPage,
   },
   lastPage: {
