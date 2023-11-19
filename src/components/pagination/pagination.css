@@ -1,0 +1,20 @@
+.pagination-bar {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pagination-bar .input-group {
+  width: max-content;
+}
+
+.pagination .page-item {
+  cursor: pointer;
+}
+
+.pagination .page-item.disabled,
+.current-page {
+  cursor: default;
+}
