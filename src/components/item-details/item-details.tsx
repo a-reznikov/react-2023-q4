@@ -1,7 +1,7 @@
 import Loader from '../loader';
 import { Character, EmptyProps } from '../types';
 
-import './item-details.css';
+// import './item-details.css';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { SetDetailsId, Details } from '../../store/reducers/details-slice';
 

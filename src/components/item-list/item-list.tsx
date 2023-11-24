@@ -1,7 +1,7 @@
 import { MouseEvent, useRef } from 'react';
 import { Character, EmptyProps } from '../types';
 
-import './item-list.css';
+import styles from './item-list.module.css';
 import Loader from '../loader';
 import ItemDetails from '../item-details';
 import ItemCard from '../item-card';
@@ -38,7 +38,7 @@ const ItemList: React.FC<EmptyProps> = (): JSX.Element => {
   );
 
   return (
-    <div className="item-list">
+    <div className={styles.itemList}>
       <div className="section-left" onClick={onCloseDetails} ref={leftList}>
         {items}
       </div>

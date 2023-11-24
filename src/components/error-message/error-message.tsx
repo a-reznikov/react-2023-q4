@@ -1,6 +1,8 @@
-import './error-message.css';
+// import './error-message.css';
 import errorIcon from '../../assets/icons/error.png';
 import { ErrorProps } from '../types';
+
+import './error-message.module.css';
 
 const ErrorMessage: React.FC<ErrorProps> = (props: ErrorProps): JSX.Element => {
   const { message } = props;

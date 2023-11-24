@@ -1,4 +1,4 @@
-.item-list {
+.itemList {
   display: flex;
   justify-content: space-evenly;
 }

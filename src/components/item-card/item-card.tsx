@@ -1,6 +1,6 @@
 import { ItemCardProps } from '../types';
 
-import './item-card.css';
+// import './item-card.css';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { Details } from '../../store/reducers/details-slice';
 

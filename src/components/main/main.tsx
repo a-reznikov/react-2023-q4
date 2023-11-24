@@ -1,4 +1,4 @@
-import './main.css';
+// import './main.css';
 import ItemList from '../item-list';
 import { EmptyProps } from '../types';
 

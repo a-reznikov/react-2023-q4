@@ -1,5 +1,5 @@
 import { EmptyProps } from '../types';
-import './not-found.css';
+// import './not-found.css';
 
 const NotFoundPage: React.FC<EmptyProps> = (): JSX.Element => {
   return (

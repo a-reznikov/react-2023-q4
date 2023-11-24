@@ -2,7 +2,7 @@ import { EmptyProps } from '../types';
 import { useInitStore } from '../hooks';
 import { Route, Routes } from 'react-router-dom';
 
-import './app.css';
+// import './app.css';
 import Layout from '../router/layout';
 import Main from '../main';
 import NotFoundPage from '../pages';

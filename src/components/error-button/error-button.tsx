@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import './error-button.css';
+import styles from './error-button.module.css';
 import { EmptyProps, HasError } from '../types';
 
 const ErrorButton: React.FC<EmptyProps> = (): JSX.Element => {
@@ -15,7 +15,10 @@ const ErrorButton: React.FC<EmptyProps> = (): JSX.Element => {
   }
 
   return (
-    <button className="error-button btn btn-danger btn-lg" onClick={onSetError}>
+    <button
+      className={`${styles.errorButton} btn btn-danger btn-lg`}
+      onClick={onSetError}
+    >
       Throw Error
     </button>
   );

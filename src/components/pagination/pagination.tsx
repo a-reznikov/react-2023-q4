@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
-import './pagination.css';
+// import './pagination.css';
 import { EmptyProps, EventChange, EventForm, FunctionVoid } from '../types';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { Limit } from '../../store/reducers/limit-slice';
