@@ -1,19 +1,27 @@
-import { MouseEvent, useRef } from 'react';
-import { Character, EmptyProps } from '../types';
+import { MouseEvent, useEffect, useRef } from 'react';
+import { Character } from '../types';
 
 import styles from './item-list.module.css';
-import Loader from '../loader';
-import ItemDetails from '../item-details';
 import ItemCard from '../item-card';
 import { Details } from '../../store/reducers/details-slice';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { useAppDispatch } from '../../store/hooks';
 import { Data } from '../../store/reducers/data-slice';
 
-const ItemList: React.FC<EmptyProps> = (): JSX.Element => {
+export type WithChildrenProps = {
+  children: React.ReactNode;
+  data: Character[];
+};
+
+const ItemList: React.FC<WithChildrenProps> = ({
+  children,
+  data,
+}): JSX.Element => {
   const dispatch = useAppDispatch();
-  const data: Character[] = useAppSelector(Data.data.select);
-  const loading: boolean = useAppSelector(Data.loader.select);
   const leftList: React.MutableRefObject<null> = useRef(null);
+
+  useEffect((): void => {
+    dispatch(Data.data.set(data));
+  }, [dispatch, data]);
 
   const onCloseDetails = (event: MouseEvent<HTMLDivElement>): void => {
     event.stopPropagation();
@@ -28,7 +36,7 @@ const ItemList: React.FC<EmptyProps> = (): JSX.Element => {
     );
   }
 
-  if (loading) return <Loader />;
+  // if (loading) return <Loader />;
 
   const items: JSX.Element[] = renderItems();
   const message: JSX.Element | null = items.length ? null : (
@@ -42,7 +50,7 @@ const ItemList: React.FC<EmptyProps> = (): JSX.Element => {
       <div className="section-left" onClick={onCloseDetails} ref={leftList}>
         {items}
       </div>
-      <ItemDetails />
+      {children}
       {message}
     </div>
   );

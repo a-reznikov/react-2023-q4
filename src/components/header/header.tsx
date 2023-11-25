@@ -1,27 +1,36 @@
+import Image from 'next/image';
 import SearchBar from '../search-bar';
-import { EmptyProps } from '../types';
+import { ResponseApi } from '../types';
 import Logo from '../../assets/icons/logo.png';
 
-// import './header.css';
+import styles from './header.module.css';
 import Pagination from '../pagination';
-import { useAppDispatch } from '../../store/hooks';
-import { SetDetailsId, Details } from '../../store/reducers/details-slice';
+import { useEffect } from 'react';
+import { Pages } from '@/store/reducers/pages-slice';
+import { useAppDispatch } from '@/store/hooks';
 
-const Header: React.FC<EmptyProps> = (): JSX.Element => {
+const Header: React.FC<{ data: ResponseApi | undefined }> = ({
+  data,
+}): JSX.Element => {
   const dispatch = useAppDispatch();
+  const lastPage = data ? `${data.pages}` : '';
+
+  useEffect((): void => {
+    dispatch(Pages.lastPage.set(lastPage));
+  }, [dispatch, lastPage]);
 
   return (
     <header
       className="header"
-      onClick={(): SetDetailsId => dispatch(Details.id.set(''))}
+      // onClick={(): SetDetailsId => dispatch(Details.id.set(''))}
     >
       <div className="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
         <div className="container-fluid">
-          <img className="navbar-brand" src={Logo} />
+          <Image className={styles.navbarBrand} src={Logo} alt="Logo" />
           <SearchBar />
         </div>
       </div>
-      <div className="control-panel container-fluid">
+      <div className={`${styles.controlPanel} container-fluid`}>
         <Pagination />
         <h2 className="text-center mb-3">Characters</h2>
       </div>

@@ -1,15 +1,11 @@
-import { EmptyProps } from '../types';
+import { WithChildrenProps } from '../types';
 import { useInitStore } from '../hooks';
-import { Route, Routes } from 'react-router-dom';
+import { ReactNode } from 'react';
 
-// import './app.css';
-import Layout from '../router/layout';
-import Main from '../main';
-import NotFoundPage from '../pages';
 import { useAppSelector } from '../../store/hooks';
 import { Message } from '../../store/reducers/message-slice';
 
-const App: React.FC<EmptyProps> = (): JSX.Element => {
+const App: React.FC<WithChildrenProps> = ({ children }): ReactNode => {
   useInitStore();
   const messageError: string = useAppSelector(Message.select);
 
@@ -17,14 +13,7 @@ const App: React.FC<EmptyProps> = (): JSX.Element => {
     throw new Error(messageError);
   }
 
-  return (
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route index element={<Main />} />
-      </Route>
-      <Route path="*" element={<NotFoundPage />} />
-    </Routes>
-  );
+  return children;
 };
 
 export default App;

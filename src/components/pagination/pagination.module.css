@@ -1,4 +1,4 @@
-.pagination-bar {
+.paginationBar {
   position: relative;
   display: flex;
   flex-wrap: wrap;
@@ -6,15 +6,15 @@
   justify-content: space-between;
 }
 
-.pagination-bar .input-group {
+.limit {
   width: max-content;
 }
 
-.pagination .page-item {
+.pageItem {
   cursor: pointer;
 }
 
-.pagination .page-item.disabled,
-.current-page {
+.page-item.disabled,
+.currentPage {
   cursor: default;
 }

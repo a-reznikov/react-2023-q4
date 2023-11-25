@@ -1,13 +1,15 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
-// import './pagination.css';
+import styles from './pagination.module.css';
 import { EmptyProps, EventChange, EventForm, FunctionVoid } from '../types';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { Limit } from '../../store/reducers/limit-slice';
 import { Pages } from '../../store/reducers/pages-slice';
+import { useRouter } from 'next/router';
 
 const Pagination: React.FC<EmptyProps> = (): JSX.Element => {
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const limit: string = useAppSelector(Limit.select);
   const page: string = useAppSelector(Pages.page.select);
@@ -20,12 +22,38 @@ const Pagination: React.FC<EmptyProps> = (): JSX.Element => {
     setCurrentLimit(limit);
   }, [limit]);
 
+  function onPushLimit(page: string, limit: string) {
+    const params = new URLSearchParams(`${router.asPath}`.slice(1));
+    if (page) {
+      params.set('page', page);
+    } else {
+      params.delete('page');
+    }
+    if (limit) {
+      params.set('limit', limit);
+    } else {
+      params.delete('limit');
+    }
+    router.push(`?${params.toString()}`);
+  }
+
+  function onPushPage(page: string) {
+    const params = new URLSearchParams(`${router.asPath}`.slice(1));
+    if (page) {
+      params.set('page', page);
+    } else {
+      params.delete('page');
+    }
+    router.push(`?${params.toString()}`);
+  }
+
   const onGetDataWithLimit: EventForm = (
     event: FormEvent<HTMLFormElement>
   ): void => {
     event.preventDefault();
     dispatch(Pages.page.set(firstPage));
     dispatch(Limit.set(currentLimit));
+    onPushLimit(firstPage, currentLimit);
   };
 
   const onSetLimit: EventChange = (
@@ -38,6 +66,7 @@ const Pagination: React.FC<EmptyProps> = (): JSX.Element => {
     const prevPage: string = `${+page - +firstPage}`;
     if (+page > +firstPage) {
       dispatch(Pages.page.set(prevPage));
+      onPushPage(prevPage);
     }
   };
 
@@ -45,14 +74,17 @@ const Pagination: React.FC<EmptyProps> = (): JSX.Element => {
     const nextPage: string = `${+page + +firstPage}`;
     if (+page < +lastPage) {
       dispatch(Pages.page.set(nextPage));
+      onPushPage(nextPage);
     }
   };
 
   return (
-    <div className="pagination-bar">
+    <div className={styles.paginationBar}>
       <ul className="pagination">
         <li
-          className={`page-item ${+page > +firstPage ? '' : 'disabled'}`}
+          className={`${styles.pageItem} page-item ${
+            +page > +firstPage ? '' : 'disabled'
+          }`}
           onClick={onPrevPage}
           data-testid="page-prev"
         >
@@ -64,14 +96,19 @@ const Pagination: React.FC<EmptyProps> = (): JSX.Element => {
           </span>
         </li>
         <li
-          className={`page-item ${+page < +lastPage ? '' : 'disabled'}`}
+          className={`${styles.pageItem} page-item ${
+            +page < +lastPage ? '' : 'disabled'
+          }`}
           onClick={onNextPage}
           data-testid="page-next"
         >
           <span className="page-link">&raquo;</span>
         </li>
       </ul>
-      <form className="limit input-group mb-3" onSubmit={onGetDataWithLimit}>
+      <form
+        className={`${styles.limit} input-group mb-3`}
+        onSubmit={onGetDataWithLimit}
+      >
         <input
           type="number"
           className="form-control"
