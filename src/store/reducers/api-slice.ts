@@ -1,5 +1,6 @@
 import { ApiKeys, ResponseApi } from '../../components/types';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { HYDRATE } from 'next-redux-wrapper';
 
 export type SearchQuery = {
   term: string;
@@ -57,6 +58,11 @@ export const apiSlice = createApi({
       return headers;
     },
   }),
+  extractRehydrationInfo(action, { reducerPath }) {
+    if (action.type === HYDRATE) {
+      return action.payload[reducerPath];
+    }
+  },
   endpoints: (builder) => ({
     getData: builder.query<ResponseApi, SearchQuery>({
       query: ({ term, limit, page }) =>
@@ -70,4 +76,9 @@ export const apiSlice = createApi({
   }),
 });
 
-export const { useGetDataQuery, useGetDataByIdQuery } = apiSlice;
+export const {
+  useGetDataQuery,
+  useGetDataByIdQuery,
+  util: { getRunningQueriesThunk },
+} = apiSlice;
+export const { getData, getDataById } = apiSlice.endpoints;

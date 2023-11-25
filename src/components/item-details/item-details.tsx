@@ -1,14 +1,17 @@
 import Loader from '../loader';
-import { Character, EmptyProps } from '../types';
+import { Character } from '../types';
 
 // import './item-details.css';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { SetDetailsId, Details } from '../../store/reducers/details-slice';
+// import { useAppDispatch, useAppSelector } from '../../store/hooks';
+// import { SetDetailsId, Details } from '../../store/reducers/details-slice';
 
-const ItemDetails: React.FC<EmptyProps> = (): JSX.Element | null => {
-  const dispatch = useAppDispatch();
-  const loadingDetails: boolean = useAppSelector(Details.loader.select);
-  const dataDetails: Character[] = useAppSelector(Details.data.select);
+const ItemDetails: React.FC<{ dataDetails: Character[] }> = ({
+  dataDetails,
+}): JSX.Element | null => {
+  // const dispatch = useAppDispatch();
+  // const loadingDetails: boolean = useAppSelector(Details.loader.select);
+  // const dataDetails: Character[] = useAppSelector(Details.data.select);
+  const loadingDetails = false;
 
   function renderItem(): JSX.Element {
     const {
@@ -35,7 +38,7 @@ const ItemDetails: React.FC<EmptyProps> = (): JSX.Element | null => {
             type="button"
             data-testid="btn-close"
             className="btn-close"
-            onClick={(): SetDetailsId => dispatch(Details.id.set(''))}
+            // onClick={(): SetDetailsId => dispatch(Details.id.set(''))}
           ></button>
           <div className="card-body">
             <h4>{name}</h4>
