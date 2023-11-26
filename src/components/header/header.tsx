@@ -1,4 +1,3 @@
-import { NextRouter, useRouter } from 'next/router';
 import Image from 'next/image';
 import { useAppDispatch } from '@/store/hooks';
 import { useEffect } from 'react';
@@ -15,24 +14,13 @@ const Header: React.FC<{ data: ResponseApi | undefined }> = ({
 }): JSX.Element => {
   const dispatch = useAppDispatch();
   const lastPage = data ? `${data.pages}` : '';
-  const router: NextRouter = useRouter();
-  const { id } = router.query;
 
   useEffect((): void => {
     dispatch(Pages.lastPage.set(lastPage));
   }, [dispatch, lastPage]);
 
-  function onCloseDetails(): void {
-    if (id) {
-      const params = new URLSearchParams(`${router.asPath}`.slice(1));
-      params.delete('id');
-
-      router.push(`?${params.toString()}`);
-    }
-  }
-
   return (
-    <header className="header" onClick={onCloseDetails}>
+    <header className="header">
       <div className="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
         <div className="container-fluid">
           <Image

@@ -130,17 +130,17 @@ export const dataFirstPage: ResponseApi = {
 export const dataByID: ResponseApi = {
   docs: [
     {
-      _id: '5cd99d4bde30eff6ebccfd8a',
-      height: '',
-      race: 'Human',
+      _id: '5cd99d4bde30eff6ebccfea0',
+      birth: 'Before the the Shaping of Arda',
+      death: 'January 253019 ,Battle of the Peak immortal',
       gender: 'Male',
-      birth: 'Late ,First Age',
-      spouse: '',
-      death: 'Late First Age',
-      realm: '',
-      hair: '',
-      name: 'Lorgan',
-      wikiUrl: 'http://lotr.wikia.com//wiki/Lorgan',
+      hair: 'Grey, later white',
+      height: 'no info',
+      name: 'Gandalf',
+      race: 'Maiar',
+      realm: 'no info',
+      spouse: 'no info',
+      wikiUrl: 'http://lotr.wikia.com//wiki/Gandalf',
     },
   ],
   total: 1,
@@ -183,4 +183,18 @@ export const dataTransform: ResponseApi = {
   limit: 10,
   page: 1,
   pages: 1,
+};
+
+export interface mockPropsType {
+  data: ResponseApi;
+  dataDetails: ResponseApi;
+  errorData: string;
+  isErrorDetails: boolean;
+}
+
+export const mockProps: mockPropsType = {
+  data: data,
+  dataDetails: dataByID,
+  errorData: '',
+  isErrorDetails: false,
 };

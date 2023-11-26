@@ -37,6 +37,7 @@ const SearchBar: React.FC<EmptyProps> = (): JSX.Element => {
     } else {
       params.delete('name');
     }
+    params.delete('id');
     router.push(`?${params.toString()}`);
   }
 

@@ -3,12 +3,12 @@ import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { store } from '../../../store/store';
-import { dataEmpty, dataWithTwoCharacter } from '../../mocks';
+import { dataEmpty, dataWithTwoCharacter, mockProps } from '../../mocks';
+import mockRouter from 'next-router-mock';
 
 import { data } from '../../mocks';
-import App from '../../../components/app';
-import { MemoryRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
+import Home from '@/pages';
 
 const fetchMocker = createFetchMock(vi);
 fetchMocker.enableMocks();
@@ -22,11 +22,9 @@ describe('Tests for the Card List component', (): void => {
     fetchMocker.mockResponse(JSON.stringify(data));
 
     render(
-      <MemoryRouter>
-        <Provider store={store}>
-          <App />
-        </Provider>
-      </MemoryRouter>
+      <Provider store={store()}>
+        <Home {...mockProps} />
+      </Provider>
     );
     const threeItems: HTMLElement[] = await screen.findAllByTestId('item-card');
     expect(threeItems.length).toBe(3);
@@ -34,22 +32,21 @@ describe('Tests for the Card List component', (): void => {
     fetchMocker.mockResponse(JSON.stringify(dataWithTwoCharacter));
     const setLimitButton: HTMLElement = screen.getByTestId('set-limit');
     const setLimitInput: HTMLInputElement = screen.getByTestId('limit-input');
+    await userEvent.clear(setLimitInput);
     await userEvent.type(setLimitInput, '2');
     await userEvent.click(setLimitButton);
-    const twoItems: HTMLElement[] = await screen.findAllByTestId('item-card');
-    expect(twoItems.length).toBe(2);
+    expect(mockRouter.query.limit).toBe('2');
   });
 });
 
 describe('Tests for the Card List component', (): void => {
   test('Check that an appropriate message is displayed if no cards are present.', (): void => {
     fetchMocker.mockResponse(JSON.stringify(dataEmpty));
+    const emptyProps = { ...mockProps, data: dataEmpty };
     render(
-      <MemoryRouter>
-        <Provider store={store}>
-          <App />
-        </Provider>
-      </MemoryRouter>
+      <Provider store={store()}>
+        <Home {...emptyProps} />
+      </Provider>
     );
 
     expect(
@@ -60,11 +57,9 @@ describe('Tests for the Card List component', (): void => {
   test('Verify static number of cards', async (): Promise<void> => {
     fetchMocker.mockResponse(JSON.stringify(data));
     render(
-      <MemoryRouter>
-        <Provider store={store}>
-          <App />
-        </Provider>
-      </MemoryRouter>
+      <Provider store={store()}>
+        <Home {...mockProps} />
+      </Provider>
     );
     const items: HTMLElement[] = await screen.findAllByTestId('item-card');
     expect(items.length).toBe(3);

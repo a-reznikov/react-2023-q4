@@ -10,6 +10,7 @@ const ErrorMessage: React.FC<ErrorProps> = (props: ErrorProps): JSX.Element => {
   const router: NextRouter = useRouter();
   function onReload(): void {
     router.push(`/?page=1&limit=10`);
+    router.reload();
   }
 
   const { message } = props;

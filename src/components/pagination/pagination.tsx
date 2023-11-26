@@ -35,6 +35,7 @@ const Pagination: React.FC<EmptyProps> = (): JSX.Element => {
     } else {
       params.delete('limit');
     }
+    params.delete('id');
     router.push(`?${params.toString()}`);
   }
 
@@ -45,6 +46,7 @@ const Pagination: React.FC<EmptyProps> = (): JSX.Element => {
     } else {
       params.delete('page');
     }
+    params.delete('id');
     router.push(`?${params.toString()}`);
   }
 
