@@ -3,12 +3,19 @@ import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { data } from '../../mocks';
-import App from '../../../components/app';
-import { MemoryRouter } from 'react-router-dom';
-import ErrorBoundry from '../../../components/error-boundry';
+import { data, dataByID } from '../../mocks';
+import Home from '@/pages';
+import { store } from '@/store/store';
+
+const mockProps = {
+  data: data,
+  dataDetails: dataByID,
+  errorData: '',
+  isErrorDetails: false,
+};
+
+import '@/styles/globals.css';
 import { Provider } from 'react-redux';
-import { store } from '../../../store/store';
 
 const fetchMocker = createFetchMock(vi);
 fetchMocker.enableMocks();
@@ -26,13 +33,9 @@ describe('Tests for the ErrorBoundry', (): void => {
     vi.spyOn(console, 'error').mockImplementation(() => null);
 
     render(
-      <ErrorBoundry>
-        <MemoryRouter>
-          <Provider store={store}>
-            <App />
-          </Provider>
-        </MemoryRouter>
-      </ErrorBoundry>
+      <Provider store={store()}>
+        <Home {...mockProps} />
+      </Provider>
     );
     const errorButton: HTMLElement = screen.getByText(/Throw Error/i);
     await userEvent.click(errorButton);

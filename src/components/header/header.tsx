@@ -35,7 +35,13 @@ const Header: React.FC<{ data: ResponseApi | undefined }> = ({
     <header className="header" onClick={onCloseDetails}>
       <div className="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
         <div className="container-fluid">
-          <Image className={styles.navbarBrand} src={Logo} alt="Logo" />
+          <Image
+            className={styles.navbarBrand}
+            width={195}
+            height={40}
+            src={Logo}
+            alt="Logo"
+          />
           <SearchBar />
         </div>
       </div>

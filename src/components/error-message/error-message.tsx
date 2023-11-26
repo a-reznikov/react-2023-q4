@@ -15,7 +15,13 @@ const ErrorMessage: React.FC<ErrorProps> = (props: ErrorProps): JSX.Element => {
   const { message } = props;
   return (
     <div className={`${styles.errorMessage} card`}>
-      <Image className={styles.errorIcon} src={errorIcon} alt="error icon" />
+      <Image
+        className={styles.errorIcon}
+        width={200}
+        height={119}
+        src={errorIcon}
+        alt="error icon"
+      />
       <h2 className="title font-weight-bold text-warning">Grr!</h2>
       <p className="text-warning">{`The all-seeing eye found the problem!`}</p>
       <p className="text-warning">{`(don't worry, we've sent orcs to handle it)`}</p>
