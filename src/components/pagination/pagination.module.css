@@ -1,0 +1,20 @@
+.paginationBar {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.limit {
+  width: max-content;
+}
+
+.pageItem {
+  cursor: pointer;
+}
+
+.page-item.disabled,
+.currentPage {
+  cursor: default;
+}
