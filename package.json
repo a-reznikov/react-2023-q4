@@ -13,7 +13,6 @@
     "test": "vitest run",
     "test:coverage": "vitest run --coverage.enabled --coverage.all",
     "test:ui": "vitest --ui",
-    "preview": "vite preview",
     "prepare": "husky install"
   },
   "dependencies": {
