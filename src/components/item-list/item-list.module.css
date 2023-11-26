@@ -3,7 +3,7 @@
   justify-content: space-evenly;
 }
 
-.section-left {
+.sectionLeft {
   flex-grow: 1;
   display: flex;
   flex-wrap: wrap;

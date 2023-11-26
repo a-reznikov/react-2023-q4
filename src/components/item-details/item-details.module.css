@@ -1,13 +1,13 @@
-.section-right {
+.sectionRight {
   flex-basis: 50%;
   flex-shrink: 0;
 }
 
-.section-right .details-card {
+.sectionRight .detailsCard {
   position: relative;
 }
 
-.section-right .loader {
+.sectionRight .loader {
   position: relative;
   display: block;
   transform: rotateZ(45deg);
@@ -20,7 +20,7 @@
   color: #00bc8c;
 }
 
-.details-card .btn-close {
+.btnClose {
   position: absolute;
   right: 20px;
   top: 20px;

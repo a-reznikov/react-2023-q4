@@ -1,15 +1,17 @@
-import styles from './main.module.css';
-import { WithChildrenProps } from '../types';
-import { useAppDispatch } from '@/store/hooks';
-import { useRouter } from 'next/router';
-import { Search } from '@/store/reducers/search-slice';
+import { NextRouter, useRouter } from 'next/router';
 import { useEffect } from 'react';
+import { useAppDispatch } from '@/store/hooks';
+
+import { Search } from '@/store/reducers/search-slice';
 import { Details } from '@/store/reducers/details-slice';
 import { Limit } from '@/store/reducers/limit-slice';
 import { Pages } from '@/store/reducers/pages-slice';
 
+import styles from './main.module.css';
+import { WithChildrenProps } from '../types';
+
 const Main: React.FC<WithChildrenProps> = ({ children }): JSX.Element => {
-  const router = useRouter();
+  const router: NextRouter = useRouter();
   const dispatch = useAppDispatch();
   const { name, limit, page, id } = router.query;
 

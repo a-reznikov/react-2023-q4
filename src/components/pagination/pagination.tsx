@@ -1,15 +1,16 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { NextRouter, useRouter } from 'next/router';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+
+import { Limit } from '../../store/reducers/limit-slice';
+import { Pages } from '../../store/reducers/pages-slice';
 
 import styles from './pagination.module.css';
 import { EmptyProps, EventChange, EventForm, FunctionVoid } from '../types';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { Limit } from '../../store/reducers/limit-slice';
-import { Pages } from '../../store/reducers/pages-slice';
-import { useRouter } from 'next/router';
 
 const Pagination: React.FC<EmptyProps> = (): JSX.Element => {
   const dispatch = useAppDispatch();
-  const router = useRouter();
+  const router: NextRouter = useRouter();
 
   const limit: string = useAppSelector(Limit.select);
   const page: string = useAppSelector(Pages.page.select);

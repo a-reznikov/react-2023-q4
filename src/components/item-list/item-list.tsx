@@ -1,11 +1,11 @@
-import { MouseEvent, useEffect, useRef } from 'react';
+import { NextRouter, useRouter } from 'next/router';
+import { MouseEvent, useRef } from 'react';
 import { Character } from '../types';
 
 import styles from './item-list.module.css';
 import ItemCard from '../item-card';
 import { Details } from '../../store/reducers/details-slice';
 import { useAppDispatch } from '../../store/hooks';
-import { Data } from '../../store/reducers/data-slice';
 
 export type WithChildrenProps = {
   children: React.ReactNode;
@@ -18,14 +18,17 @@ const ItemList: React.FC<WithChildrenProps> = ({
 }): JSX.Element => {
   const dispatch = useAppDispatch();
   const leftList: React.MutableRefObject<null> = useRef(null);
-
-  useEffect((): void => {
-    dispatch(Data.data.set(data));
-  }, [dispatch, data]);
+  const router: NextRouter = useRouter();
 
   const onCloseDetails = (event: MouseEvent<HTMLDivElement>): void => {
     event.stopPropagation();
-    if (leftList.current === event.target) dispatch(Details.id.set(''));
+    if (leftList.current === event.target) {
+      dispatch(Details.id.set(''));
+      const params = new URLSearchParams(`${router.asPath}`.slice(1));
+      params.delete('id');
+
+      router.push(`?${params.toString()}`);
+    }
   };
 
   function renderItems(): JSX.Element[] {
@@ -47,7 +50,11 @@ const ItemList: React.FC<WithChildrenProps> = ({
 
   return (
     <div className={styles.itemList}>
-      <div className="section-left" onClick={onCloseDetails} ref={leftList}>
+      <div
+        className={styles.sectionLeft}
+        onClick={onCloseDetails}
+        ref={leftList}
+      >
         {items}
       </div>
       {children}

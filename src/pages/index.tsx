@@ -1,5 +1,4 @@
 import Head from 'next/head';
-import Link from 'next/link';
 import React from 'react';
 import { ResponseApi } from '@/components/types';
 import { getData, getDataById } from '@/store/reducers/api-slice';
@@ -54,7 +53,6 @@ export default function Home({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header data={data} />
-      <Link href="/character">Characters</Link>
       <Main>
         {data && (
           <ItemList data={data.docs}>

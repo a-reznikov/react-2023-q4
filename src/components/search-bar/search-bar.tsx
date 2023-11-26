@@ -1,16 +1,17 @@
+import { NextRouter, useRouter } from 'next/router';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { EmptyProps, EventChange, EventForm } from '../types';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { selectSearch, setSearch } from '../../store/reducers/search-slice';
 import { Pages } from '../../store/reducers/pages-slice';
-import { useRouter } from 'next/router';
+
+import { EmptyProps, EventChange, EventForm } from '../types';
 
 const SearchBar: React.FC<EmptyProps> = (): JSX.Element => {
   const term: string = useAppSelector(selectSearch);
   const [currentSearchTerm, setCurrentSearchTerm] = useState<string>('');
   const dispatch = useAppDispatch();
   const page: string = useAppSelector(Pages.page.select);
-  const router = useRouter();
+  const router: NextRouter = useRouter();
 
   const firstPage: string = `1`;
 
