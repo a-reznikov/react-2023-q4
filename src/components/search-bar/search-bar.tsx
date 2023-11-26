@@ -44,7 +44,7 @@ const SearchBar: React.FC<EmptyProps> = (): JSX.Element => {
     event.preventDefault();
     if (page !== firstPage) dispatch(Pages.page.set(firstPage));
     dispatch(setSearch(currentSearchTerm));
-    onPushTerm(page, term);
+    onPushTerm(page, currentSearchTerm);
     localStorage.setItem('termForSearching', currentSearchTerm);
   };
 

@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import { useAppDispatch } from '@/store/hooks';
 
 import { Search } from '@/store/reducers/search-slice';
-import { Details } from '@/store/reducers/details-slice';
 import { Limit } from '@/store/reducers/limit-slice';
 import { Pages } from '@/store/reducers/pages-slice';
 
@@ -13,15 +12,11 @@ import { WithChildrenProps } from '../types';
 const Main: React.FC<WithChildrenProps> = ({ children }): JSX.Element => {
   const router: NextRouter = useRouter();
   const dispatch = useAppDispatch();
-  const { name, limit, page, id } = router.query;
+  const { name, limit, page } = router.query;
 
   useEffect((): void => {
     dispatch(Search.set(`${name || ''}`));
   }, [dispatch, name]);
-
-  useEffect((): void => {
-    dispatch(Details.id.set(`${id || ''}`));
-  }, [dispatch, id]);
 
   useEffect((): void => {
     dispatch(Limit.set(`${limit || '10'}`));

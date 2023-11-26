@@ -4,8 +4,6 @@ import { Character } from '../types';
 
 import styles from './item-list.module.css';
 import ItemCard from '../item-card';
-import { Details } from '../../store/reducers/details-slice';
-import { useAppDispatch } from '../../store/hooks';
 
 export type WithChildrenProps = {
   children: React.ReactNode;
@@ -16,14 +14,13 @@ const ItemList: React.FC<WithChildrenProps> = ({
   children,
   data,
 }): JSX.Element => {
-  const dispatch = useAppDispatch();
   const leftList: React.MutableRefObject<null> = useRef(null);
   const router: NextRouter = useRouter();
+  const { id } = router.query;
 
   const onCloseDetails = (event: MouseEvent<HTMLDivElement>): void => {
     event.stopPropagation();
-    if (leftList.current === event.target) {
-      dispatch(Details.id.set(''));
+    if (leftList.current === event.target && id) {
       const params = new URLSearchParams(`${router.asPath}`.slice(1));
       params.delete('id');
 
@@ -38,8 +35,6 @@ const ItemList: React.FC<WithChildrenProps> = ({
       )
     );
   }
-
-  // if (loading) return <Loader />;
 
   const items: JSX.Element[] = renderItems();
   const message: JSX.Element | null = items.length ? null : (

@@ -6,11 +6,11 @@
   cursor: pointer;
 }
 
-.character-card:hover {
+.characterCard:hover {
   border-color: rgb(55, 90, 127);
 }
 
-.character-image {
+.characterImage {
   width: 150px;
   flex-shrink: 0;
   border-radius: 5px;

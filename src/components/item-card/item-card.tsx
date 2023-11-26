@@ -2,15 +2,12 @@ import { NextRouter, useRouter } from 'next/router';
 import { ItemCardProps } from '../types';
 
 import styles from './item-card.module.css';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { Details } from '../../store/reducers/details-slice';
 
 const ItemCard: React.FC<ItemCardProps> = (
   props: ItemCardProps
 ): JSX.Element => {
-  const id: string = useAppSelector(Details.id.select);
-  const dispatch = useAppDispatch();
   const router: NextRouter = useRouter();
+  const { id } = router.query;
 
   const { name, gender, race, birth, _id } = props.character;
 
@@ -26,10 +23,8 @@ const ItemCard: React.FC<ItemCardProps> = (
 
   function onChangeId(_id: string): void {
     if (_id === id) {
-      dispatch(Details.id.set(''));
       onPushDetails('');
     } else {
-      dispatch(Details.id.set(_id));
       onPushDetails(_id);
     }
   }
@@ -42,7 +37,9 @@ const ItemCard: React.FC<ItemCardProps> = (
       }`}
       onClick={(): void => onChangeId(_id)}
     >
-      <div className={`character-image ${race.toLowerCase()}`} />
+      <div
+        className={`${styles.characterImage} ${styles[race.toLowerCase()]}`}
+      />
       <div className="card-body">
         <h4>{name}</h4>
         <ul className="list-group list-group-flush">

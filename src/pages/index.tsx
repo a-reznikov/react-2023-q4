@@ -10,6 +10,9 @@ import Header from '@/components/header';
 import Main from '@/components/main';
 import ItemList from '@/components/item-list';
 import ItemDetails from '@/components/item-details';
+import ErrorBoundry from '@/components/error-boundry';
+import ErrorButton from '@/components/error-button';
+import App from '@/components/app';
 
 export const getServerSideProps: GetServerSideProps =
   wrapper.getServerSideProps((store) => async (context) => {
@@ -52,14 +55,19 @@ export default function Home({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header data={data} />
-      <Main>
-        {data && (
-          <ItemList data={data.docs}>
-            {dataDetails && <ItemDetails dataDetails={dataDetails.docs} />}
-          </ItemList>
-        )}
-      </Main>
+      <ErrorBoundry>
+        <App>
+          <Header data={data} />
+          <Main>
+            {data && (
+              <ItemList data={data.docs}>
+                {dataDetails && <ItemDetails dataDetails={dataDetails.docs} />}
+              </ItemList>
+            )}
+          </Main>
+          <ErrorButton />
+        </App>
+      </ErrorBoundry>
     </>
   );
 }

@@ -3,7 +3,6 @@ import Image from 'next/image';
 import { useAppDispatch } from '@/store/hooks';
 import { useEffect } from 'react';
 import { Pages } from '@/store/reducers/pages-slice';
-import { Details } from '@/store/reducers/details-slice';
 
 import styles from './header.module.css';
 import Pagination from '../pagination';
@@ -17,17 +16,19 @@ const Header: React.FC<{ data: ResponseApi | undefined }> = ({
   const dispatch = useAppDispatch();
   const lastPage = data ? `${data.pages}` : '';
   const router: NextRouter = useRouter();
+  const { id } = router.query;
 
   useEffect((): void => {
     dispatch(Pages.lastPage.set(lastPage));
   }, [dispatch, lastPage]);
 
   function onCloseDetails(): void {
-    dispatch(Details.id.set(''));
-    const params = new URLSearchParams(`${router.asPath}`.slice(1));
-    params.delete('id');
+    if (id) {
+      const params = new URLSearchParams(`${router.asPath}`.slice(1));
+      params.delete('id');
 
-    router.push(`?${params.toString()}`);
+      router.push(`?${params.toString()}`);
+    }
   }
 
   return (

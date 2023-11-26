@@ -53,7 +53,7 @@ export const apiSlice = createApi({
     baseUrl: 'https://the-one-api.dev/v2',
     prepareHeaders: (headers) => {
       headers.set('accept', 'application/json');
-      headers.set('authorization', `Bearer ${ApiKeys.second}`);
+      headers.set('authorization', `Bearer ${ApiKeys.main}`);
 
       return headers;
     },

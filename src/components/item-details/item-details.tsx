@@ -1,22 +1,18 @@
 import { NextRouter, useRouter } from 'next/router';
-import { useAppDispatch } from '../../store/hooks';
 
 import Loader from '../loader';
 import { Character } from '../types';
 
 import styles from './item-details.module.css';
-import { Details } from '../../store/reducers/details-slice';
 
 const ItemDetails: React.FC<{ dataDetails: Character[] }> = ({
   dataDetails,
 }): JSX.Element | null => {
-  const dispatch = useAppDispatch();
   const router: NextRouter = useRouter();
 
   const loadingDetails: boolean = false;
 
   function onCloseDetails(): void {
-    dispatch(Details.id.set(''));
     const params = new URLSearchParams(`${router.asPath}`.slice(1));
     params.delete('id');
 
