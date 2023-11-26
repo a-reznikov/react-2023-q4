@@ -5,9 +5,9 @@ import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import { store } from '../../../store/store';
 
-import { dataFirstPage } from '../../mocks';
-import App from '../../../components/app';
-import { BrowserRouter } from 'react-router-dom';
+import { dataFirstPage, mockProps } from '../../mocks';
+import Home from '@/pages';
+import mockRouter from 'next-router-mock';
 
 const fetchMocker = createFetchMock(vi);
 fetchMocker.enableMocks();
@@ -20,29 +20,23 @@ describe('Tests for the Pagination component', (): void => {
   test('Make sure the component updates URL query parameter when page changes', async (): Promise<void> => {
     fetchMocker.mockResponse(JSON.stringify(dataFirstPage));
 
+    const mockData = { ...mockProps, data: dataFirstPage };
+
     render(
-      <BrowserRouter>
-        <Provider store={store}>
-          <App />
-        </Provider>
-      </BrowserRouter>
+      <Provider store={store()}>
+        <Home {...mockData} />
+      </Provider>
     );
 
     const pageNextButton: HTMLElement = await screen.findByTestId('page-next');
     const pagePrevButton: HTMLElement = await screen.findByTestId('page-prev');
-    expect(screen.queryByTestId('item-details')).toBeNull();
-    expect(location.search.includes('page=1')).toBeTruthy();
     await userEvent.click(pageNextButton);
-    expect(location.search.includes('page=1')).toBeFalsy();
-    expect(location.search.includes('page=2')).toBeTruthy();
+    expect(mockRouter.query.page).toEqual('2');
     await userEvent.click(pageNextButton);
-    expect(location.search.includes('page=3')).toBeTruthy();
+    expect(mockRouter.query.page).toEqual('3');
     await userEvent.click(pagePrevButton);
-    expect(location.search.includes('page=2')).toBeTruthy();
+    expect(mockRouter.query.page).toEqual('2');
     await userEvent.click(pagePrevButton);
-    expect(location.search.includes('page=1')).toBeTruthy();
-    expect(location.search.includes('page=2')).toBeFalsy();
-    expect(location.search.includes('page=3')).toBeFalsy();
-    expect(location.search.includes('page=0')).toBeFalsy();
+    expect(mockRouter.query.page).toEqual('1');
   });
 });
