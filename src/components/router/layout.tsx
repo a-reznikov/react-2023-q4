@@ -5,7 +5,7 @@ import { EmptyProps } from '../types';
 const Layout: React.FC<EmptyProps> = (): JSX.Element => {
   return (
     <div className="app">
-      <h2>Header</h2>
+      <h2 className="text-3xl font-bold underline">Header</h2>
       <Outlet />
     </div>
   );
