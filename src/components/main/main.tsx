@@ -1,8 +1,12 @@
-import './main.css';
 import { EmptyProps } from '../types';
+import Navigation from '../navigation';
 
 const Main: React.FC<EmptyProps> = (): JSX.Element => {
-  return <section>Main Container</section>;
+  return (
+    <main className="main">
+      <Navigation />
+    </main>
+  );
 };
 
 export default Main;

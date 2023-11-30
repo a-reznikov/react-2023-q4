@@ -2,7 +2,6 @@ import { EmptyProps } from '../types';
 import { Route, Routes } from 'react-router-dom';
 
 import './app.css';
-import Layout from '../router/layout';
 import Main from '../main';
 import NotFoundPage from '../pages';
 import { useAppSelector } from '../../store/hooks';
@@ -17,9 +16,9 @@ const App: React.FC<EmptyProps> = (): JSX.Element => {
 
   return (
     <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route index element={<Main />} />
-      </Route>
+      <Route path="/" element={<Main />} />
+      <Route path="uncontrolled" element={<p>Uncontrolled</p>} />
+      <Route path="controlled" element={<p>React Hook Form</p>} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
