@@ -1,11 +1,12 @@
 import { EmptyProps } from '../types';
 import { Route, Routes } from 'react-router-dom';
 
-import './app.css';
-import Main from '../main';
-import NotFoundPage from '../pages';
 import { useAppSelector } from '../../store/hooks';
 import { Message } from '../../store/reducers/message-slice';
+
+import Main from '../main';
+import { Uncontrolled, Controlled } from '../forms';
+import NotFoundPage from '../pages';
 
 const App: React.FC<EmptyProps> = (): JSX.Element => {
   const messageError: string = useAppSelector(Message.select);
@@ -17,8 +18,8 @@ const App: React.FC<EmptyProps> = (): JSX.Element => {
   return (
     <Routes>
       <Route path="/" element={<Main />} />
-      <Route path="uncontrolled" element={<p>Uncontrolled</p>} />
-      <Route path="controlled" element={<p>React Hook Form</p>} />
+      <Route path="uncontrolled" element={<Uncontrolled />} />
+      <Route path="controlled" element={<Controlled />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
