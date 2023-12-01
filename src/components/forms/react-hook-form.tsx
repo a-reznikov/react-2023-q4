@@ -11,6 +11,7 @@ import { setHookForm } from '../../store/reducers/hook-form-slice';
 interface FormInput {
   name: string;
   age: number;
+  email: string;
 }
 
 const ReactHookForm: React.FC<EmptyProps> = (): JSX.Element => {
@@ -22,8 +23,8 @@ const ReactHookForm: React.FC<EmptyProps> = (): JSX.Element => {
   } = useForm<FormInput>({ resolver: yupResolver(schema) });
 
   const onSubmit = (data: FormInput) => {
-    const { name, age } = data;
-    dispatch(setHookForm({ name, age }));
+    const { name, age, email } = data;
+    dispatch(setHookForm({ name, age, email }));
   };
 
   return (
@@ -56,18 +57,20 @@ const ReactHookForm: React.FC<EmptyProps> = (): JSX.Element => {
           />
           {errors.age && <ValidationMessage message={errors.age.message} />}
         </div>
-        {/* <div className="form-group">
+        <div className="form-group">
           <label htmlFor="inputEmail" className="form-label mt-4">
             Email address
           </label>
           <input
+            {...register('email')}
             type="email"
-            className="form-control"
+            className={`form-control ${errors.email ? 'is-invalid' : ''}`}
             id="inputEmail"
             placeholder="Enter email"
           />
+          {errors.email && <ValidationMessage message={errors.email.message} />}
         </div>
-        <div className="form-group">
+        {/* <div className="form-group">
           <label htmlFor="inputPassword" className="form-label mt-4">
             Password
           </label>
