@@ -1,55 +1,62 @@
-import { FormEvent, useRef } from 'react';
-import { EmptyProps, EventForm } from '../types';
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 
-const Uncontrolled: React.FC<EmptyProps> = (): JSX.Element => {
-  const inputName = useRef<HTMLInputElement>(null);
-  const inputAge = useRef<HTMLInputElement>(null);
+import { EmptyProps } from '../types';
+import schema from '../../utils';
+import ValidationMessage from '../validation-message';
+import { useAppDispatch } from '../../store/hooks';
+import { setHookForm } from '../../store/reducers/hook-form-slice';
 
-  const handleSubmit: EventForm = async (
-    event: FormEvent<HTMLFormElement>
-  ): Promise<void> => {
-    event.preventDefault();
-    // const formData = {
-    //   name: inputName.current?.value,
-    //   age: inputAge.current?.value,
-    // };
+interface FormInput {
+  name: string;
+  age: number;
+}
 
-    // try {
-    //   const validData = await schema.validate(formData);
-    //   console.log(validData);
-    // } catch (error) {
-    //   console.log('Error', error.errors);
-    // }
+const ReactHookForm: React.FC<EmptyProps> = (): JSX.Element => {
+  const dispatch = useAppDispatch();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormInput>({ resolver: yupResolver(schema) });
+
+  const onSubmit = (data: FormInput) => {
+    const { name, age } = data;
+    dispatch(setHookForm({ name, age }));
   };
+
   return (
-    <form className="position-relative" onSubmit={handleSubmit}>
+    <form className="position-relative" onSubmit={handleSubmit(onSubmit)}>
       <fieldset className="mx-auto p-2 w-50 p-3">
-        <legend>Uncontrolled Form</legend>
+        <legend>Controlled Form</legend>
         <div className="form-group">
           <label htmlFor="inputName" className="form-label mt-4">
             Name
           </label>
           <input
+            {...register('name')}
             type="text"
-            className="form-control"
+            className={`form-control ${errors.name ? 'is-invalid' : ''}`}
             id="inputName"
             placeholder="Enter name"
-            ref={inputName}
           />
+          {errors.name && <ValidationMessage message={errors.name.message} />}
         </div>
         <div className="form-group">
           <label htmlFor="inputAge" className="form-label mt-4">
             Age
           </label>
           <input
+            {...register('age')}
             type="number"
-            className="form-control"
+            className={`form-control ${errors.age ? 'is-invalid' : ''}`}
             id="inputAge"
             placeholder="Enter age"
-            ref={inputAge}
           />
+          {errors.age && <ValidationMessage message={errors.age.message} />}
         </div>
-        <div className="form-group">
+        {/* <div className="form-group">
           <label htmlFor="inputEmail" className="form-label mt-4">
             Email address
           </label>
@@ -144,7 +151,7 @@ const Uncontrolled: React.FC<EmptyProps> = (): JSX.Element => {
             id="inputCountry"
             placeholder="Enter country"
           />
-        </div>
+        </div> */}
         <button type="submit" className="btn btn-primary mt-4">
           Submit
         </button>
@@ -153,4 +160,4 @@ const Uncontrolled: React.FC<EmptyProps> = (): JSX.Element => {
   );
 };
 
-export default Uncontrolled;
+export default ReactHookForm;

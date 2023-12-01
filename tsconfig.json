@@ -25,6 +25,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
+  "include": ["src", "src/components/forms/react-hook-form.tsx"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

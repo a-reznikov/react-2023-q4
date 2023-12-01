@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import messageReducer from './reducers/message-slice';
-import formReducer from './reducers/form-slice';
+import hookFormReducer from './reducers/hook-form-slice';
 
 export const store = configureStore({
   reducer: {
     message: messageReducer,
-    form: formReducer,
+    hookForm: hookFormReducer,
   },
 });
 

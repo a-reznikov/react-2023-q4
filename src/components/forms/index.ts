@@ -1,4 +1,4 @@
 import Uncontrolled from './uncontrolled';
-import Controlled from './controlled';
+import ReactHookForm from './react-hook-form';
 
-export { Uncontrolled, Controlled };
+export { Uncontrolled, ReactHookForm };
