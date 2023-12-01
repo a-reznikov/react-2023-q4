@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { EmptyProps } from '../types';
 
 const Navigation: React.FC<EmptyProps> = (): JSX.Element => {
@@ -8,19 +8,34 @@ const Navigation: React.FC<EmptyProps> = (): JSX.Element => {
         <div className="collapse navbar-collapse" id="navbarColor02">
           <ul className="navbar-nav me-auto">
             <li className="nav-item">
-              <Link className="nav-link active" to={'/'}>
+              <NavLink
+                className={({ isActive }) =>
+                  isActive ? 'nav-link active' : 'nav-link'
+                }
+                to={'/'}
+              >
                 Main
-              </Link>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <Link to={'/uncontrolled'} className="nav-link">
-                Uncontrolled
-              </Link>
+              <NavLink
+                to={'/uncontrolled'}
+                className={({ isActive }) =>
+                  isActive ? 'nav-link active' : 'nav-link'
+                }
+              >
+                Uncontrolled Form
+              </NavLink>
             </li>
             <li className="nav-item">
-              <Link to={'/controlled'} className="nav-link">
-                Controlled
-              </Link>
+              <NavLink
+                to={'/hook'}
+                className={({ isActive }) =>
+                  isActive ? 'nav-link active' : 'nav-link'
+                }
+              >
+                React Hook Form
+              </NavLink>
             </li>
           </ul>
         </div>

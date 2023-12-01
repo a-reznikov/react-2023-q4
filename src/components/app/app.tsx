@@ -7,6 +7,7 @@ import { Message } from '../../store/reducers/message-slice';
 import Main from '../main';
 import { Uncontrolled, ReactHookForm } from '../forms';
 import NotFoundPage from '../pages';
+import Layout from '../router/layout';
 
 const App: React.FC<EmptyProps> = (): JSX.Element => {
   const messageError: string = useAppSelector(Message.select);
@@ -17,9 +18,11 @@ const App: React.FC<EmptyProps> = (): JSX.Element => {
 
   return (
     <Routes>
-      <Route path="/" element={<Main />} />
-      <Route path="uncontrolled" element={<Uncontrolled />} />
-      <Route path="hook" element={<ReactHookForm />} />
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Main />} />
+        <Route path="uncontrolled" element={<Uncontrolled />} />
+        <Route path="hook" element={<ReactHookForm />} />
+      </Route>
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
