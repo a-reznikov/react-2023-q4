@@ -14,6 +14,25 @@ const schema = yup.object().shape({
     .string()
     .email('Email should be like example@mail.com')
     .required('Email is a required field'),
+  password: yup
+    .string()
+    .required('Password is a required field')
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[^\s]/,
+      'The password strength: 1 number, 1 uppercased letter, 1 lowercased letter, 1 special character'
+    ),
+  repeatPassword: yup
+    .string()
+    .required('Repeat password is a required field')
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[^\s]/,
+      'The password strength: 1 number, 1 uppercased letter, 1 lowercased letter, 1 special character'
+    ),
+  gender: yup
+    .string()
+    .oneOf(['male', 'female'])
+    .required('Please choose your gender'),
+  // gender: yup.string(),
 });
 
 export default schema;

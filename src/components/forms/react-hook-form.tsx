@@ -7,12 +7,7 @@ import schema from '../../utils';
 import ValidationMessage from '../validation-message';
 import { useAppDispatch } from '../../store/hooks';
 import { setHookForm } from '../../store/reducers/hook-form-slice';
-
-interface FormInput {
-  name: string;
-  age: number;
-  email: string;
-}
+import { FormInput } from '../../store/types';
 
 const ReactHookForm: React.FC<EmptyProps> = (): JSX.Element => {
   const dispatch = useAppDispatch();
@@ -22,9 +17,16 @@ const ReactHookForm: React.FC<EmptyProps> = (): JSX.Element => {
     formState: { errors },
   } = useForm<FormInput>({ resolver: yupResolver(schema) });
 
+  // const onChange = (e) => {
+  //   console.log(e);
+  // };
+
   const onSubmit = (data: FormInput) => {
-    const { name, age, email } = data;
-    dispatch(setHookForm({ name, age, email }));
+    const { name, age, email, password, repeatPassword, gender } = data;
+
+    dispatch(
+      setHookForm({ name, age, email, password, repeatPassword, gender })
+    );
   };
 
   return (
@@ -70,37 +72,48 @@ const ReactHookForm: React.FC<EmptyProps> = (): JSX.Element => {
           />
           {errors.email && <ValidationMessage message={errors.email.message} />}
         </div>
-        {/* <div className="form-group">
+        <div className="form-group">
           <label htmlFor="inputPassword" className="form-label mt-4">
             Password
           </label>
           <input
+            {...register('password')}
             type="password"
-            className="form-control"
+            className={`form-control ${errors.password ? 'is-invalid' : ''}`}
             id="inputPassword"
             placeholder="Password"
           />
+          {errors.password && (
+            <ValidationMessage message={errors.password.message} />
+          )}
         </div>
         <div className="form-group">
           <label htmlFor="inputRepeatPassword" className="form-label mt-4">
             Repeat password
           </label>
           <input
+            {...register('repeatPassword')}
             type="password"
-            className="form-control"
+            className={`form-control ${errors.password ? 'is-invalid' : ''}`}
             id="inputRepeatPassword"
             placeholder="Password"
           />
+          {errors.repeatPassword && (
+            <ValidationMessage message={errors.repeatPassword.message} />
+          )}
         </div>
         <fieldset className="form-group">
-          <legend className="mt-4">Gender</legend>
+          <legend className={`mt-4 ${errors.gender ? 'is-invalid' : ''}`}>
+            Gender
+          </legend>
           <div className="form-check">
             <input
+              {...register('gender')}
               className="form-check-input"
               type="radio"
-              name="optionsGender"
               id="optionsGenderMale"
               value="male"
+              defaultChecked
             />
             <label className="form-check-label" htmlFor="optionsGenderMale">
               Male
@@ -108,9 +121,9 @@ const ReactHookForm: React.FC<EmptyProps> = (): JSX.Element => {
           </div>
           <div className="form-check">
             <input
+              {...register('gender')}
               className="form-check-input"
               type="radio"
-              name="optionsGender"
               id="optionsGenderFemale"
               value="female"
             />
@@ -118,8 +131,11 @@ const ReactHookForm: React.FC<EmptyProps> = (): JSX.Element => {
               Female
             </label>
           </div>
+          {errors.gender && (
+            <ValidationMessage message={errors.gender.message} />
+          )}
         </fieldset>
-        <fieldset className="form-group">
+        {/* <fieldset className="form-group">
           <legend className="mt-4">Install viruses</legend>
           <div className="form-check">
             <input
