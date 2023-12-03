@@ -146,8 +146,8 @@ const Uncontrolled: React.FC<EmptyProps> = (): JSX.Element => {
     <form className="position-relative" onSubmit={checkValidityForm}>
       <fieldset className="mx-auto p-2 w-50 p-3">
         <legend>Uncontrolled Form</legend>
-        <div className="form-group">
-          <label htmlFor="inputName" className="form-label mt-4">
+        <div className="form-group" style={{ minHeight: '95px' }}>
+          <label htmlFor="inputName" className="form-label">
             Name
           </label>
           <input
@@ -159,8 +159,8 @@ const Uncontrolled: React.FC<EmptyProps> = (): JSX.Element => {
           />
           {errName && <ValidationMessage message={errName} />}
         </div>
-        <div className="form-group">
-          <label htmlFor="inputAge" className="form-label mt-4">
+        <div className="form-group" style={{ minHeight: '95px' }}>
+          <label htmlFor="inputAge" className="form-label">
             Age
           </label>
           <input
@@ -172,8 +172,8 @@ const Uncontrolled: React.FC<EmptyProps> = (): JSX.Element => {
           />
           {errAge && <ValidationMessage message={errAge} />}
         </div>
-        <div className="form-group">
-          <label htmlFor="inputEmail" className="form-label mt-4">
+        <div className="form-group" style={{ minHeight: '95px' }}>
+          <label htmlFor="inputEmail" className="form-label">
             Email address
           </label>
           <input
@@ -185,8 +185,8 @@ const Uncontrolled: React.FC<EmptyProps> = (): JSX.Element => {
           />
           {errEmail && <ValidationMessage message={errEmail} />}
         </div>
-        <div className="form-group">
-          <label htmlFor="inputPassword" className="form-label mt-4">
+        <div className="form-group" style={{ minHeight: '116px' }}>
+          <label htmlFor="inputPassword" className="form-label">
             Password
           </label>
           <input
@@ -198,8 +198,8 @@ const Uncontrolled: React.FC<EmptyProps> = (): JSX.Element => {
           />
           {errPassword && <ValidationMessage message={errPassword} />}
         </div>
-        <div className="form-group">
-          <label htmlFor="inputRepeatPassword" className="form-label mt-4">
+        <div className="form-group" style={{ minHeight: '116px' }}>
+          <label htmlFor="inputRepeatPassword" className="form-label">
             Repeat password
           </label>
           <input
@@ -213,10 +213,8 @@ const Uncontrolled: React.FC<EmptyProps> = (): JSX.Element => {
             <ValidationMessage message={errRepeatPassword} />
           )}
         </div>
-        <fieldset className="form-group">
-          <legend className={`mt-4 ${errGender ? 'is-invalid' : ''}`}>
-            Gender
-          </legend>
+        <fieldset className="form-group" style={{ minHeight: '95px' }}>
+          <legend className={`${errGender ? 'is-invalid' : ''}`}>Gender</legend>
           <div className="form-check">
             <input
               ref={inputGender}
@@ -246,8 +244,8 @@ const Uncontrolled: React.FC<EmptyProps> = (): JSX.Element => {
           </div>
           {errGender && <ValidationMessage message={errGender} />}
         </fieldset>
-        <fieldset className="form-group">
-          <legend className={`mt-4 ${errAccept ? 'is-invalid' : ''}`}>
+        <fieldset className="form-group" style={{ minHeight: '117px' }}>
+          <legend className={`mt-2 ${errAccept ? 'is-invalid' : ''}`}>
             Install viruses
           </legend>
           <div className="form-check">
@@ -263,10 +261,10 @@ const Uncontrolled: React.FC<EmptyProps> = (): JSX.Element => {
           </div>
           {errAccept && <ValidationMessage message={errAccept} />}
         </fieldset>
-        <div className="form-group">
+        <div className="form-group" style={{ minHeight: '95px' }}>
           <label
             htmlFor="formFile"
-            className={`form-label mt-4 ${errPicture ? 'is-invalid' : ''}`}
+            className={`form-label ${errPicture ? 'is-invalid' : ''}`}
           >
             Upload picture
           </label>
@@ -279,8 +277,8 @@ const Uncontrolled: React.FC<EmptyProps> = (): JSX.Element => {
           />
           {errPicture && <ValidationMessage message={errPicture} />}
         </div>
-        <div className="form-group">
-          <label htmlFor="inputCountry" className="form-label mt-4">
+        <div className="form-group" style={{ minHeight: '184px' }}>
+          <label htmlFor="inputCountry" className="form-label mt-2">
             Country
           </label>
           <input
@@ -291,6 +289,7 @@ const Uncontrolled: React.FC<EmptyProps> = (): JSX.Element => {
             placeholder="Enter country"
             onChange={prepareCountries}
           />
+          {errCountry && <ValidationMessage message={errCountry} />}
           <div
             className="form-group overflow-auto h-50px"
             style={{ height: '80px' }}
@@ -306,7 +305,6 @@ const Uncontrolled: React.FC<EmptyProps> = (): JSX.Element => {
                 </div>
               ))}
           </div>
-          {errCountry && <ValidationMessage message={errCountry} />}
         </div>
         <button type="submit" className="btn btn-primary mt-4">
           Submit
