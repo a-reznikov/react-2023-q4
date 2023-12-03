@@ -38,3 +38,14 @@ export interface FormValidationInput {
   picture: object;
   country: string;
 }
+
+export interface PathError {
+  errors: string[];
+  message: string;
+  path: string;
+}
+
+export interface ValidationError {
+  errors: string[];
+  inner: PathError[];
+}

@@ -51,10 +51,68 @@ export interface FormSlice {
   };
 }
 
+export interface ErrorSlice {
+  name: {
+    select: SelectString;
+  };
+  age: {
+    select: SelectString;
+  };
+  email: {
+    select: SelectString;
+  };
+  password: {
+    select: SelectString;
+  };
+  repeatPassword: {
+    select: SelectString;
+  };
+  gender: {
+    select: SelectString;
+  };
+  accept: {
+    select: SelectString;
+  };
+  picture: {
+    select: SelectString;
+  };
+  country: {
+    select: SelectString;
+  };
+}
+
 export interface Countries {
   countries: string[];
 }
 
 export interface Main {
   forms: FormInput[];
+}
+
+export interface ErrorsObject {
+  name: string[];
+  age: string[];
+  email: string[];
+  password: string[];
+  repeatPassword: string[];
+  gender: string[];
+  accept: string[];
+  picture: string[];
+  country: string[];
+}
+
+export interface ErrorsList {
+  name: string;
+  age: string;
+  email: string;
+  password: string;
+  repeatPassword: string;
+  gender: string;
+  accept: string;
+  picture: string;
+  country: string;
+}
+
+export interface Current {
+  current: { value: string };
 }

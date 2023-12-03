@@ -3,6 +3,7 @@ import messageReducer from './reducers/message-slice';
 import hookFormReducer from './reducers/hook-form-slice';
 import countriesReducer from './reducers/countries-slice';
 import mainReducer from './reducers/main-slice';
+import errorsReducer from './reducers/errors-slice';
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     hookForm: hookFormReducer,
     countries: countriesReducer,
     main: mainReducer,
+    errors: errorsReducer,
   },
 });
 
