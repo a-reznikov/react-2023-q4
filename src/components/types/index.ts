@@ -1,3 +1,5 @@
+import { Gender } from '../../store/types';
+
 import { FormEvent } from 'react';
 
 export type HasError = boolean;
@@ -24,3 +26,14 @@ export type WithChildrenProps = {
 };
 
 export type EventForm = (event: FormEvent<HTMLFormElement>) => void;
+
+export interface FormValidationInput {
+  name: string;
+  age: number;
+  email: string;
+  password: string;
+  repeatPassword: string;
+  gender: Gender;
+  accept: boolean;
+  picture: object;
+}

@@ -1,5 +1,10 @@
 import * as yup from 'yup';
 
+interface FileValue {
+  size: number;
+  type: string;
+}
+
 const schema = yup.object().shape({
   name: yup
     .string()
@@ -37,6 +42,28 @@ const schema = yup.object().shape({
     .boolean()
     .oneOf([true], 'Please agree to the installation')
     .required('Filed is a required field'),
+  picture: yup
+    .mixed()
+    .required('A file is required')
+    .test('File not load', 'Please load file', (value) => {
+      const valuePicture = value as FileValue[];
+      return !!valuePicture.length;
+    })
+    .test('File size', 'The file size must be less than 2mb', (value) => {
+      const valuePicture = value as FileValue[];
+      return valuePicture[0] && valuePicture[0].size <= 2000000;
+    })
+    .test(
+      'File extension',
+      'The file extension must be jpeg or png',
+      (value) => {
+        const valuePicture = value as FileValue[];
+        return (
+          (valuePicture[0] && valuePicture[0].type === 'image/jpeg') ||
+          (valuePicture[0] && valuePicture[0].type === 'image/png')
+        );
+      }
+    ),
 });
 
 export default schema;

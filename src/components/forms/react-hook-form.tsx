@@ -2,12 +2,12 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { EmptyProps } from '../types';
+import { EmptyProps, FormValidationInput } from '../types';
 import schema from '../../utils';
 import ValidationMessage from '../validation-message';
 import { useAppDispatch } from '../../store/hooks';
 import { setHookForm } from '../../store/reducers/hook-form-slice';
-import { FormInput } from '../../store/types';
+import { converterToBase64 } from '../../utils/converter';
 
 const ReactHookForm: React.FC<EmptyProps> = (): JSX.Element => {
   const dispatch = useAppDispatch();
@@ -15,14 +15,31 @@ const ReactHookForm: React.FC<EmptyProps> = (): JSX.Element => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormInput>({ resolver: yupResolver(schema) });
+  } = useForm<FormValidationInput>({
+    mode: 'onChange',
+    resolver: yupResolver(schema),
+  });
 
-  // const onChange = (e) => {
-  //   console.log(e);
-  // };
+  let picture64: string = '';
 
-  const onSubmit = (data: FormInput) => {
+  register('picture', {
+    onChange: async (event) => {
+      if (
+        'files' in event.target &&
+        event.target.files &&
+        event.target.files.length
+      ) {
+        const file: File = event.target.files[0];
+        const convertedPicture = await converterToBase64(file);
+        if (typeof convertedPicture === 'string') picture64 = convertedPicture;
+      }
+    },
+  });
+
+  const onSubmit = (data: FormValidationInput) => {
     const { name, age, email, password, repeatPassword, gender, accept } = data;
+
+    const picture = picture64;
 
     dispatch(
       setHookForm({
@@ -33,6 +50,7 @@ const ReactHookForm: React.FC<EmptyProps> = (): JSX.Element => {
         repeatPassword,
         gender,
         accept,
+        picture,
       })
     );
   };
@@ -165,18 +183,24 @@ const ReactHookForm: React.FC<EmptyProps> = (): JSX.Element => {
             <ValidationMessage message={errors.accept.message} />
           )}
         </fieldset>
-        {/* <div className="form-group">
-          <label htmlFor="formFile" className="form-label mt-4">
+        <div className="form-group">
+          <label
+            htmlFor="formFile"
+            className={`form-label mt-4 ${errors.picture ? 'is-invalid' : ''}`}
+          >
             Upload picture
           </label>
           <input
+            {...register('picture')}
             className="form-control"
             type="file"
             id="formFile"
-            accept="image/png, image/jpeg"
           />
+          {errors.picture && (
+            <ValidationMessage message={errors.picture.message} />
+          )}
         </div>
-        <div className="form-group">
+        {/* <div className="form-group">
           <label htmlFor="inputCountry" className="form-label mt-4">
             Country
           </label>

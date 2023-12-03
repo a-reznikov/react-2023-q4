@@ -18,6 +18,7 @@ const initialState: FormInput = {
   repeatPassword: '',
   gender: 'male',
   accept: false,
+  picture: '',
 };
 
 export const HookFormSlice = createSlice({
@@ -32,6 +33,7 @@ export const HookFormSlice = createSlice({
       state.repeatPassword = action.payload.repeatPassword;
       state.gender = action.payload.gender;
       state.accept = action.payload.accept;
+      state.picture = action.payload.picture;
     },
   },
 });
@@ -51,6 +53,8 @@ export const selectGender: SelectGender = (state: RootState) =>
   state.hookForm.gender;
 export const selectAccept: SelectBoolean = (state: RootState) =>
   state.hookForm.accept;
+export const selectPicture: SelectString = (state: RootState) =>
+  state.hookForm.repeatPassword;
 
 export default HookFormSlice.reducer;
 
@@ -75,5 +79,8 @@ export const HookForm: FormSlice = {
   },
   accept: {
     select: selectAccept,
+  },
+  picture: {
+    select: selectPicture,
   },
 };

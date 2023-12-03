@@ -1,6 +1,6 @@
 import { RootState } from '../store';
 
-type Gender = 'male' | 'female';
+export type Gender = 'male' | 'female';
 
 export interface FormInput {
   name: string;
@@ -10,6 +10,7 @@ export interface FormInput {
   repeatPassword: string;
   gender: Gender;
   accept: boolean;
+  picture: string;
 }
 
 export type SelectString = (state: RootState) => string;
@@ -38,5 +39,8 @@ export interface FormSlice {
   };
   accept: {
     select: SelectBoolean;
+  };
+  picture: {
+    select: SelectString;
   };
 }
