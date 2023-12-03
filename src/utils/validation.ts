@@ -64,6 +64,7 @@ const schema = yup.object().shape({
         );
       }
     ),
+  country: yup.string().required('Country is a required field'),
 });
 
 export default schema;

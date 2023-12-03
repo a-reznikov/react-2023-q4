@@ -5,22 +5,33 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { EmptyProps, FormValidationInput } from '../types';
 import schema from '../../utils';
 import ValidationMessage from '../validation-message';
-import { useAppDispatch } from '../../store/hooks';
-import { setHookForm } from '../../store/reducers/hook-form-slice';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import {
+  HookForm,
+  setHookForm,
+  setPicture,
+} from '../../store/reducers/hook-form-slice';
 import { converterToBase64 } from '../../utils/converter';
+import { countryList } from '../../data/countries';
+import {
+  selectCountries,
+  setCountries,
+} from '../../store/reducers/countries-slice';
 
 const ReactHookForm: React.FC<EmptyProps> = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<FormValidationInput>({
     mode: 'onChange',
     resolver: yupResolver(schema),
   });
 
-  let picture64: string = '';
+  const picture = useAppSelector(HookForm.picture.select);
+  const foundedCountries = useAppSelector(selectCountries);
 
   register('picture', {
     onChange: async (event) => {
@@ -31,15 +42,48 @@ const ReactHookForm: React.FC<EmptyProps> = (): JSX.Element => {
       ) {
         const file: File = event.target.files[0];
         const convertedPicture = await converterToBase64(file);
-        if (typeof convertedPicture === 'string') picture64 = convertedPicture;
+        if (typeof convertedPicture === 'string')
+          dispatch(setPicture(convertedPicture));
       }
     },
   });
 
-  const onSubmit = (data: FormValidationInput) => {
-    const { name, age, email, password, repeatPassword, gender, accept } = data;
+  const searchCountries = (text: string) => {
+    if (!text) {
+      dispatch(setCountries([]));
+    } else {
+      const matches: string[] = countryList.filter((country) => {
+        const regex = new RegExp(`${text.toLowerCase()}`);
+        return country.toLowerCase().match(regex);
+      });
+      dispatch(setCountries(matches));
+    }
+  };
 
-    const picture = picture64;
+  register('country', {
+    onChange: (event) => {
+      searchCountries(event.target.value);
+    },
+  });
+
+  const onSetCountry = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (e.target instanceof HTMLElement) {
+      setValue('country', e.target.innerText);
+      dispatch(setCountries([]));
+    }
+  };
+
+  const onSubmit = (data: FormValidationInput) => {
+    const {
+      name,
+      age,
+      email,
+      password,
+      repeatPassword,
+      gender,
+      accept,
+      country,
+    } = data;
 
     dispatch(
       setHookForm({
@@ -51,6 +95,7 @@ const ReactHookForm: React.FC<EmptyProps> = (): JSX.Element => {
         gender,
         accept,
         picture,
+        country,
       })
     );
   };
@@ -200,17 +245,36 @@ const ReactHookForm: React.FC<EmptyProps> = (): JSX.Element => {
             <ValidationMessage message={errors.picture.message} />
           )}
         </div>
-        {/* <div className="form-group">
+        <div className="form-group">
           <label htmlFor="inputCountry" className="form-label mt-4">
             Country
           </label>
           <input
+            {...register('country')}
             type="text"
-            className="form-control"
+            className={`form-control ${errors.country ? 'is-invalid' : ''}`}
             id="inputCountry"
             placeholder="Enter country"
           />
-        </div> */}
+          <div
+            className="form-group overflow-auto h-50px"
+            style={{ height: '80px' }}
+          >
+            {foundedCountries &&
+              foundedCountries.map((country, index) => (
+                <div
+                  className="mt-1"
+                  key={index}
+                  onClick={(e) => onSetCountry(e)}
+                >
+                  {country}
+                </div>
+              ))}
+          </div>
+          {errors.country && (
+            <ValidationMessage message={errors.country.message} />
+          )}
+        </div>
         <button type="submit" className="btn btn-primary mt-4">
           Submit
         </button>

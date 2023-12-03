@@ -36,4 +36,5 @@ export interface FormValidationInput {
   gender: Gender;
   accept: boolean;
   picture: object;
+  country: string;
 }
