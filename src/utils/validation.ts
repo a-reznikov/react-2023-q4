@@ -24,6 +24,7 @@ const schema = yup.object().shape({
   repeatPassword: yup
     .string()
     .required('Repeat password is a required field')
+    .oneOf([yup.ref('password')], 'The password does not match')
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[^\s]/,
       'The password strength: 1 number, 1 uppercased letter, 1 lowercased letter, 1 special character'
@@ -32,7 +33,10 @@ const schema = yup.object().shape({
     .string()
     .oneOf(['male', 'female'])
     .required('Please choose your gender'),
-  // gender: yup.string(),
+  accept: yup
+    .boolean()
+    .oneOf([true], 'Please agree to the installation')
+    .required('Filed is a required field'),
 });
 
 export default schema;

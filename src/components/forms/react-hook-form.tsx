@@ -22,10 +22,18 @@ const ReactHookForm: React.FC<EmptyProps> = (): JSX.Element => {
   // };
 
   const onSubmit = (data: FormInput) => {
-    const { name, age, email, password, repeatPassword, gender } = data;
+    const { name, age, email, password, repeatPassword, gender, accept } = data;
 
     dispatch(
-      setHookForm({ name, age, email, password, repeatPassword, gender })
+      setHookForm({
+        name,
+        age,
+        email,
+        password,
+        repeatPassword,
+        gender,
+        accept,
+      })
     );
   };
 
@@ -94,7 +102,9 @@ const ReactHookForm: React.FC<EmptyProps> = (): JSX.Element => {
           <input
             {...register('repeatPassword')}
             type="password"
-            className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+            className={`form-control ${
+              errors.repeatPassword ? 'is-invalid' : ''
+            }`}
             id="inputRepeatPassword"
             placeholder="Password"
           />
@@ -135,10 +145,13 @@ const ReactHookForm: React.FC<EmptyProps> = (): JSX.Element => {
             <ValidationMessage message={errors.gender.message} />
           )}
         </fieldset>
-        {/* <fieldset className="form-group">
-          <legend className="mt-4">Install viruses</legend>
+        <fieldset className="form-group">
+          <legend className={`mt-4 ${errors.accept ? 'is-invalid' : ''}`}>
+            Install viruses
+          </legend>
           <div className="form-check">
             <input
+              {...register('accept')}
               className="form-check-input"
               type="checkbox"
               value=""
@@ -148,8 +161,11 @@ const ReactHookForm: React.FC<EmptyProps> = (): JSX.Element => {
               I agree to install viruses and break my computer.
             </label>
           </div>
+          {errors.accept && (
+            <ValidationMessage message={errors.accept.message} />
+          )}
         </fieldset>
-        <div className="form-group">
+        {/* <div className="form-group">
           <label htmlFor="formFile" className="form-label mt-4">
             Upload picture
           </label>

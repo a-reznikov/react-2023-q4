@@ -9,11 +9,13 @@ export interface FormInput {
   password: string;
   repeatPassword: string;
   gender: Gender;
+  accept: boolean;
 }
 
 export type SelectString = (state: RootState) => string;
 export type SelectNumber = (state: RootState) => number;
 export type SelectGender = (state: RootState) => Gender;
+export type SelectBoolean = (state: RootState) => boolean;
 
 export interface FormSlice {
   name: {
@@ -33,5 +35,8 @@ export interface FormSlice {
   };
   gender: {
     select: SelectGender;
+  };
+  accept: {
+    select: SelectBoolean;
   };
 }
