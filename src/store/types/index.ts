@@ -19,6 +19,7 @@ export type SelectNumber = (state: RootState) => number;
 export type SelectGender = (state: RootState) => Gender;
 export type SelectBoolean = (state: RootState) => boolean;
 export type SelectArrayString = (state: RootState) => string[];
+export type SelectMain = (state: RootState) => FormInput[];
 
 export interface FormSlice {
   name: {
@@ -52,4 +53,8 @@ export interface FormSlice {
 
 export interface Countries {
   countries: string[];
+}
+
+export interface Main {
+  forms: FormInput[];
 }

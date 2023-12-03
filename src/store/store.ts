@@ -2,12 +2,14 @@ import { configureStore } from '@reduxjs/toolkit';
 import messageReducer from './reducers/message-slice';
 import hookFormReducer from './reducers/hook-form-slice';
 import countriesReducer from './reducers/countries-slice';
+import mainReducer from './reducers/main-slice';
 
 export const store = configureStore({
   reducer: {
     message: messageReducer,
     hookForm: hookFormReducer,
     countries: countriesReducer,
+    main: mainReducer,
   },
 });
 

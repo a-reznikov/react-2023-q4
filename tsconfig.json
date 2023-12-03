@@ -25,6 +25,10 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "src/components/forms/react-hook-form.tsx"],
+  "include": [
+    "src",
+    "src/components/forms/react-hook-form.tsx",
+    "src/store/reducers/.ts"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

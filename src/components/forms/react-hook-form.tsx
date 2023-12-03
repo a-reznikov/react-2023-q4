@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -17,8 +18,11 @@ import {
   selectCountries,
   setCountries,
 } from '../../store/reducers/countries-slice';
+import { setMain } from '../../store/reducers/main-slice';
+import { FormInput } from '../../store/types';
 
 const ReactHookForm: React.FC<EmptyProps> = (): JSX.Element => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const {
     register,
@@ -85,19 +89,20 @@ const ReactHookForm: React.FC<EmptyProps> = (): JSX.Element => {
       country,
     } = data;
 
-    dispatch(
-      setHookForm({
-        name,
-        age,
-        email,
-        password,
-        repeatPassword,
-        gender,
-        accept,
-        picture,
-        country,
-      })
-    );
+    const validForm: FormInput = {
+      name,
+      age,
+      email,
+      password,
+      repeatPassword,
+      gender,
+      accept,
+      picture,
+      country,
+    };
+    dispatch(setHookForm(validForm));
+    dispatch(setMain(validForm));
+    navigate('/');
   };
 
   return (
