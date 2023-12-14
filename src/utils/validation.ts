@@ -5,6 +5,13 @@ interface FileValue {
   type: string;
 }
 
+function generateStrengthMessage(value: number) {
+  const levelStrength = 4 - value;
+  if (levelStrength === 1) return 'Low strength';
+  if (levelStrength === 2) return 'Medium strength';
+  if (levelStrength === 3) return 'Last criterion';
+}
+
 const schema = yup.object().shape({
   name: yup
     .string()
@@ -22,18 +29,63 @@ const schema = yup.object().shape({
   password: yup
     .string()
     .required('Password is a required field')
-    .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[^\s]/,
-      'The password strength: 1 number, 1 uppercased letter, 1 lowercased letter, 1 special character'
+    .test(
+      'Password strength',
+      'Password strength',
+      function (password: string = ''): true | yup.ValidationError {
+        const number = /[0-9]/;
+        const lowercase = /[a-z]/;
+        const uppercase = /[A-Z]/;
+        const symbol = /[!@#$%^&*()_+{}[\]:;<>,.?~\\/-]/;
+
+        const err = [];
+
+        if (!number.test(password)) err.push('number');
+        if (!lowercase.test(password)) err.push('lowercase letter');
+        if (!uppercase.test(password)) err.push('uppercase letter');
+        if (!symbol.test(password)) err.push('special character');
+
+        if (err.length > 0) {
+          return this.createError({
+            message: `${generateStrengthMessage(
+              err.length
+            )}. Add to password one: ${err.join(', ')}`,
+          });
+        }
+        return true;
+      }
     ),
   repeatPassword: yup
     .string()
     .required('Repeat password is a required field')
-    .oneOf([yup.ref('password')], 'The password does not match')
-    .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[^\s]/,
-      'The password strength: 1 number, 1 uppercased letter, 1 lowercased letter, 1 special character'
-    ),
+    .test(
+      'Password strength',
+      'Password strength',
+      function (password: string = ''): true | yup.ValidationError {
+        const number = /[0-9]/;
+        const lowercase = /[a-z]/;
+        const uppercase = /[A-Z]/;
+        const symbol = /[!@#$%^&*()_+{}[\]:;<>,.?~\\/-]/;
+
+        const err = [];
+
+        if (!number.test(password)) err.push('number');
+        if (!lowercase.test(password)) err.push('lowercase letter');
+        if (!uppercase.test(password)) err.push('uppercase letter');
+        if (!symbol.test(password)) err.push('special character');
+
+        if (err.length > 0) {
+          return this.createError({
+            message: `${generateStrengthMessage(
+              err.length
+            )}. Add to password one: ${err.join(', ')}`,
+          });
+        }
+        return true;
+      }
+    )
+    .oneOf([yup.ref('password')], 'The password does not match'),
+
   gender: yup
     .string()
     .oneOf(['male', 'female'])
