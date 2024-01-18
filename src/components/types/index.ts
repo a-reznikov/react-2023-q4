@@ -50,8 +50,6 @@ export interface ErrorState {
   messageError: string;
 }
 
-export interface EmptyProps {}
-
 export interface EmptyState {}
 
 export type WithChildrenProps = {

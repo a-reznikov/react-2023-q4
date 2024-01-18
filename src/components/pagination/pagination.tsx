@@ -1,12 +1,12 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
 import './pagination.css';
-import { EmptyProps, EventChange, EventForm, FunctionVoid } from '../types';
+import { EventChange, EventForm, FunctionVoid } from '../types';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { Limit } from '../../store/reducers/limit-slice';
 import { Pages } from '../../store/reducers/pages-slice';
 
-const Pagination: React.FC<EmptyProps> = (): JSX.Element => {
+const Pagination: React.FC = (): JSX.Element => {
   const dispatch = useAppDispatch();
 
   const limit: string = useAppSelector(Limit.select);

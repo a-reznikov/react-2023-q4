@@ -1,10 +1,10 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { EmptyProps, EventChange, EventForm } from '../types';
+import { EventChange, EventForm } from '../types';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { selectSearch, setSearch } from '../../store/reducers/search-slice';
 import { Pages } from '../../store/reducers/pages-slice';
 
-const SearchBar: React.FC<EmptyProps> = (): JSX.Element => {
+const SearchBar: React.FC = (): JSX.Element => {
   const term: string = useAppSelector(selectSearch);
   const [currentSearchTerm, setCurrentSearchTerm] = useState<string>('');
   const dispatch = useAppDispatch();

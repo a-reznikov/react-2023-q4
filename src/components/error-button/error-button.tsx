@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
 import './error-button.css';
-import { EmptyProps, HasError } from '../types';
+import { HasError } from '../types';
 
-const ErrorButton: React.FC<EmptyProps> = (): JSX.Element => {
+const ErrorButton: React.FC = (): JSX.Element => {
   const [hasError, setHasError] = useState<HasError>(false);
 
   function onSetError(): void {

@@ -1,5 +1,5 @@
 import SearchBar from '../search-bar';
-import { EmptyProps } from '../types';
+
 import Logo from '../../assets/icons/logo.png';
 
 import './header.css';
@@ -7,7 +7,7 @@ import Pagination from '../pagination';
 import { useAppDispatch } from '../../store/hooks';
 import { SetDetailsId, Details } from '../../store/reducers/details-slice';
 
-const Header: React.FC<EmptyProps> = (): JSX.Element => {
+const Header: React.FC = (): JSX.Element => {
   const dispatch = useAppDispatch();
 
   return (

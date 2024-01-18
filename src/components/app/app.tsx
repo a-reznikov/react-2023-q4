@@ -1,15 +1,14 @@
-import { EmptyProps } from '../types';
 import { useInitStore } from '../hooks';
 import { Route, Routes } from 'react-router-dom';
 
 import './app.css';
 import Layout from '../router/layout';
 import Main from '../main';
-import NotFoundPage from '../pages';
+import NotFoundPage from '../not-found';
 import { useAppSelector } from '../../store/hooks';
 import { Message } from '../../store/reducers/message-slice';
 
-const App: React.FC<EmptyProps> = (): JSX.Element => {
+const App: React.FC = (): JSX.Element => {
   useInitStore();
   const messageError: string = useAppSelector(Message.select);
 

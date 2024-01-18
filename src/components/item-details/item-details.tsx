@@ -1,11 +1,11 @@
 import Loader from '../loader';
-import { Character, EmptyProps } from '../types';
+import { Character } from '../types';
 
 import './item-details.css';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { SetDetailsId, Details } from '../../store/reducers/details-slice';
 
-const ItemDetails: React.FC<EmptyProps> = (): JSX.Element | null => {
+const ItemDetails: React.FC = (): JSX.Element | null => {
   const dispatch = useAppDispatch();
   const loadingDetails: boolean = useAppSelector(Details.loader.select);
   const dataDetails: Character[] = useAppSelector(Details.data.select);

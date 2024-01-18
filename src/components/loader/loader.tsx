@@ -1,7 +1,6 @@
 import './loader.css';
-import { EmptyProps } from '../types';
 
-const Loader: React.FC<EmptyProps> = (): JSX.Element => {
+const Loader: React.FC = (): JSX.Element => {
   return <span className="loader" data-testid="loader"></span>;
 };
 

@@ -1,5 +1,5 @@
 import { MouseEvent, useRef } from 'react';
-import { Character, EmptyProps } from '../types';
+import { Character } from '../types';
 
 import './item-list.css';
 import Loader from '../loader';
@@ -9,7 +9,7 @@ import { Details } from '../../store/reducers/details-slice';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { Data } from '../../store/reducers/data-slice';
 
-const ItemList: React.FC<EmptyProps> = (): JSX.Element => {
+const ItemList: React.FC = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const data: Character[] = useAppSelector(Data.data.select);
   const loading: boolean = useAppSelector(Data.loader.select);
