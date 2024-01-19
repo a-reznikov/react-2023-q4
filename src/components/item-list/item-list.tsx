@@ -4,14 +4,17 @@ import { Character } from '../types';
 
 import styles from './item-list.module.css';
 import ItemCard from '../item-card';
+import Loader from '../loader';
 
 export type WithChildrenProps = {
   children: React.ReactNode;
+  loading: boolean;
   data: Character[];
 };
 
 const ItemList: React.FC<WithChildrenProps> = ({
   children,
+  loading,
   data,
 }): JSX.Element => {
   const leftList: React.MutableRefObject<null> = useRef(null);
@@ -45,15 +48,21 @@ const ItemList: React.FC<WithChildrenProps> = ({
 
   return (
     <div className={styles.itemList}>
-      <div
-        className={styles.sectionLeft}
-        onClick={onCloseDetails}
-        ref={leftList}
-      >
-        {items}
-      </div>
-      {children}
-      {message}
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          <div
+            className={styles.sectionLeft}
+            onClick={onCloseDetails}
+            ref={leftList}
+          >
+            {items}
+          </div>
+          {children}
+          {message}
+        </>
+      )}
     </div>
   );
 };
