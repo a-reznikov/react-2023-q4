@@ -4,8 +4,6 @@ import { ReactNode } from 'react';
 import { useAppSelector } from '../../store/hooks';
 import { Message } from '../../store/reducers/message-slice';
 
-import styles from './app.module.css';
-
 const App: React.FC<WithChildrenProps> = ({ children }): ReactNode => {
   const messageError: string = useAppSelector(Message.select);
 
@@ -13,7 +11,14 @@ const App: React.FC<WithChildrenProps> = ({ children }): ReactNode => {
     throw new Error(messageError);
   }
 
-  return <div className={styles.app}>{children}</div>;
+  return (
+    <div
+      className="d-flex flex-column flex-grow-1 justify-content-between"
+      style={{ minHeight: '100vh' }}
+    >
+      {children}
+    </div>
+  );
 };
 
 export default App;

@@ -14,6 +14,7 @@ import ItemDetails from '@/components/item-details';
 import ErrorBoundry from '@/components/error-boundry';
 import App from '@/components/app';
 import ErrorMessage from '@/components/error-message';
+import Footer from '@/components/footer';
 
 export const getServerSideProps: GetServerSideProps =
   wrapper.getServerSideProps((store) => async (context) => {
@@ -109,6 +110,7 @@ export default function Home({
           </ItemList>
         )}
       </Main>
+      <Footer />
     </App>
   ) : (
     <ErrorMessage message={errorData} />

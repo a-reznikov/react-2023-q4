@@ -58,9 +58,9 @@ const ItemList: React.FC<WithChildrenProps> = ({
             ref={leftList}
           >
             {items}
+            {message}
           </div>
           {children}
-          {message}
         </>
       )}
     </div>
