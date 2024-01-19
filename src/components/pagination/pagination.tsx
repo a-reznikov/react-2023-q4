@@ -85,8 +85,8 @@ const Pagination: React.FC<EmptyProps> = (): JSX.Element => {
     <div className={styles.paginationBar}>
       <ul className="pagination">
         <li
-          className={`${styles.pageItem} page-item ${
-            +page > +firstPage ? '' : 'disabled'
+          className={`page-item ${
+            +page > +firstPage ? styles.pageItem : 'disabled'
           }`}
           onClick={onPrevPage}
           data-testid="page-prev"
@@ -99,8 +99,8 @@ const Pagination: React.FC<EmptyProps> = (): JSX.Element => {
           </span>
         </li>
         <li
-          className={`${styles.pageItem} page-item ${
-            +page < +lastPage ? '' : 'disabled'
+          className={`page-item ${
+            +page < +lastPage ? styles.pageItem : 'disabled'
           }`}
           onClick={onNextPage}
           data-testid="page-next"

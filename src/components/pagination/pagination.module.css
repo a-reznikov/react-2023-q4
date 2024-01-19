@@ -13,8 +13,3 @@
 .pageItem {
   cursor: pointer;
 }
-
-.page-item.disabled,
-.currentPage {
-  cursor: default;
-}

@@ -58,7 +58,7 @@ const SearchBar: React.FC<EmptyProps> = (): JSX.Element => {
         className="form-control me-sm-2"
         id="search-input"
         type="search"
-        placeholder="search character by name"
+        placeholder="search by name..."
         onChange={changeSearchTerm}
         value={currentSearchTerm}
         data-testid="search-input"
