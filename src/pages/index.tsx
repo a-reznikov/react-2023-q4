@@ -11,7 +11,7 @@ import Header from '@/components/header';
 import Main from '@/components/main';
 import ItemList from '@/components/item-list';
 import ItemDetails from '@/components/item-details';
-import ErrorBoundry from '@/components/error-boundry';
+import ErrorBoundary from '@/components/error-boundry';
 import App from '@/components/app';
 import ErrorMessage from '@/components/error-message';
 import Footer from '@/components/footer';
@@ -123,7 +123,7 @@ export default function Home({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <ErrorBoundry>{content}</ErrorBoundry>
+      <ErrorBoundary>{content}</ErrorBoundary>
     </>
   );
 }
